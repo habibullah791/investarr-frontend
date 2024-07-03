@@ -1,0 +1,285 @@
+import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setUser } from '../../../../store/user/userSlice';
+
+import InputBox from '../../../Atom/InputBox/InputBox';
+import ImageField from '../../../Atom/ImageField/ImageField';
+import TextArea from '../../../Atom/TextArea/TextArea';
+import Spinner from '../../../Atom/Spinner/Spinner';
+
+import EmailPassword from '../EmailPass/EmailPass';
+import Verification from '../Verification/Verification';
+
+import { AreaOFIntrest } from '../../../../Constant/constants';
+import { updateInvesteePersonalInfo } from '../../../../api/User/User';
+import { UploadSingleImageToCloud } from '../../../../utils/utilityFunctions';
+
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
+
+const InvesteesProfie = () => {
+    const user = useSelector((state) => state.user.user);
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const tokens = useSelector(state => state.user.tokens);
+
+    const [activeTab, setActiveTab] = useState('personalInfo');
+
+    const renderContent = () => {
+        switch (activeTab) {
+            case 'personalInfo':
+                return <PersonalInfo user={user} tokens={tokens} />;
+            case 'emailPassword':
+                return <EmailPassword user={user} tokens={tokens} />;
+            case 'verification':
+                return <Verification user={user} tokens={tokens} />;
+            default:
+                return <PersonalInfo user={user} tokens={tokens} />;
+        }
+    };
+
+    return (
+        <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-1/4 h-auto md:h-screen border-b md:border-r">
+                <div
+                    className={`p-2 cursor-pointer font-semibold ${activeTab === 'personalInfo' ? 'bg-gray-300 text-black' : 'bg-white text-gray-400'}`}
+                    onClick={() => setActiveTab('personalInfo')}
+                >
+                    Personal Info
+                </div>
+                <div
+                    className={`p-2 mt-2 cursor-pointer font-semibold ${activeTab === 'emailPassword' ? 'bg-gray-300 text-black' : 'bg-white text-gray-400'}`}
+                    onClick={() => setActiveTab('emailPassword')}
+                >
+                    Email & Password
+                </div>
+                <div
+                    className={`p-2 mt-2 cursor-pointer font-semibold ${activeTab === 'verification' ? 'bg-gray-300 text-black' : 'bg-white text-gray-400'}`}
+                    onClick={() => setActiveTab('verification')}
+                >
+                    Verification
+                </div>
+            </div>
+            <div className="w-full md:w-3/4 px-4 py-4">
+                {renderContent()}
+            </div>
+        </div>
+    );
+}
+
+const PersonalInfo = ({ user, tokens }) => {
+    const dispatch = useDispatch();
+
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        profilePicture: user?.profile_pic_url || '',
+        firstName: user?.first_name || '',
+        lastName: user?.last_name || '',
+        address: user?.address || '',
+        areaOfInterest: user?.area_of_interest || '',
+        bio: user?.bio || '',
+        phone: user?.phone_number || '',
+        startupName: user?.startup_name || '',
+        startupIdea: user?.startup_idea || '',
+        startupDescription: user?.startup_description || '',
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSelectChange = (selectedOptions) => {
+        const values = selectedOptions.map(option => option.value);
+        setFormData({ ...formData, areaOfInterest: values });
+    };
+
+    const handleImageChange = (url) => {
+        setFormData({ ...formData, profilePicture: url });
+    };
+
+    const handleUpdate = async () => {
+        setLoading(true);
+        let formApiData = {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            address: formData.address,
+            area_of_interest: Array.isArray(formData.areaOfInterest) ? formData.areaOfInterest.join(',') : formData.areaOfInterest,
+            bio: formData.bio,
+            profile_pic_url: formData.profilePicture,
+            phone_number: formData.phone,
+            startup_name: formData.startupName,
+            startup_idea: formData.startupIdea,
+            startup_description: formData.startupDescription,
+        };
+
+        if (formData.profilePicture !== user?.profile_pic_url) {
+            try {
+                const uploadedImageUrl = await UploadSingleImageToCloud(formData.profilePicture);
+                formApiData.profile_pic_url = uploadedImageUrl;
+            } catch (error) {
+                setFormData(prevFormData => ({ ...prevFormData, profile_pic_url: '' }));
+                toast.error('Failed to upload profile picture');
+                setLoading(false);
+                return;
+            }
+        }
+
+        for (const key in formApiData) {
+            if (formApiData[key] === '') {
+                toast.error(`${key} cannot be empty`);
+                setLoading(false);
+                return;
+            }
+        }
+
+        await updateInvesteePersonalInfo(tokens.access, user?.id, formApiData)
+            .then((response) => {
+                toast.success('Profile updated successfully');
+                dispatch(setUser(
+                    {
+                        ...user,
+                        first_name: formData.firstName,
+                        last_name: formData.lastName,
+                        address: formData.address,
+                        area_of_interest: formApiData.area_of_interest,
+                        bio: formData.bio,
+                        profile_pic_url: formData.profilePicture,
+                        phone_number: formData.phone,
+                        startup_name: formData.startupName,
+                        startup_idea: formData.startupIdea,
+                        startup_description: formData.startupDescription,
+                    }));
+                setLoading(false);
+            })
+            .catch((error) => {
+                toast.error('Failed to update profile');
+                console.error("Error updating profile: ", error);
+                setLoading(false);
+            });
+    };
+
+    return (
+        <div>
+            {loading && <Spinner />}
+            <Toaster
+                position="bottom-right"
+                reverseOrder={false}
+                toastOptions={{
+                    style: {
+                        backgroundColor: '#483BBF',
+                        border: '1px solid #483BBF',
+                        padding: '7px 12px',
+                        color: '#FFFFFF',
+                        fontWeight: '400',
+                        borderRadius: '15px',
+                    },
+                    iconTheme: {
+                        secondary: '#FFFFFF',
+                    },
+                }}
+            />
+            <h2 className="tracking-tighter text-2xl font-bold mb-4">Personal Info</h2>
+            <div className="grid grid-cols-2 gap-x-4 items-start">
+                <div className="w-full col-span-2 flex flex-row items-center md:justify-start justify-center mt-4 mb-8 border-b">
+                    <ImageField
+                        label="Profile Picture"
+                        name="profilePicture"
+                        onChange={handleImageChange}
+                        defaultValue={formData.profilePicture}
+                    />
+                </div>
+                <InputBox
+                    label="First Name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                />
+                <InputBox
+                    label="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                />
+                <InputBox
+                    label="Phone Number"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                />
+                <InputBox
+                    label="Address"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                />
+                <div className="col-span-2">
+                    <label className='text-sm text-primary'>Area of Interest</label>
+                    <Select
+                        closeMenuOnSelect={false}
+                        components={animatedComponents}
+                        value={AreaOFIntrest.filter(option => formData.areaOfInterest.includes(option.value))}
+                        onChange={handleSelectChange}
+                        placeholder="Area of intrest"
+                        isMulti
+                        options={AreaOFIntrest}
+                        styles={{
+                            control: (provided, state) => ({
+                                ...provided,
+                                border: '2px solid #483BBF',
+                                borderRadius: '8px',
+                                padding: '5px',
+                            }),
+                            option: (provided, state) => ({
+                                ...provided,
+                                backgroundColor: state.isFocused ? '#483BBF' : null,
+                                color: state.isFocused ? 'white' : null,
+                            }),
+                        }}
+                    />
+                </div>
+                <InputBox
+                    label="Startup Name"
+                    name="startupName"
+                    value={formData.startupName}
+                    onChange={handleInputChange}
+                />
+                <div className="col-span-2">
+                    <TextArea
+                        label="Bio"
+                        name="bio"
+                        value={formData.bio}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="col-span-2">
+                    <TextArea
+                        label="Startup Idea"
+                        name="startupIdea"
+                        value={formData.startupIdea}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <div className="col-span-2">
+                    <TextArea
+                        label="Startup Description"
+                        name="startupDescription"
+                        value={formData.startupDescription}
+                        onChange={handleInputChange}
+                    />
+                </div>
+            </div>
+            <button
+                onClick={handleUpdate}
+                className="bg-primary text-white px-4 py-2 rounded-lg mt-4 hover:bg-white hover:text-primary border border-primary"
+            >
+                Update
+            </button>
+        </div>
+    );
+};
+
+export default InvesteesProfie;

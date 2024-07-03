@@ -1,0 +1,28 @@
+/* Global Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Width of the scrollbar */
+    height: 12px;
+    /* Height of the scrollbar (for horizontal scrollbar) */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #483BBF;
+    /* Color of the scrollbar thumb */
+    border-radius: 6px;
+    /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2E2772;
+    /* Darker color when hovering over the scrollbar thumb */
+}
+
+::-webkit-scrollbar-button {
+    display: none !important;
+}
