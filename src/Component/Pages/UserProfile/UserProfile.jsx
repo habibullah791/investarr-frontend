@@ -28,7 +28,6 @@ const UserProfile = () => {
         fetchUserData(tokens.access, id)
             .then((data) => {
                 setUserData(data);
-                console.log('User data:', data);
             })
             .catch((error) => {
                 console.error('Error fetching user data:', error);
@@ -36,7 +35,6 @@ const UserProfile = () => {
     }, [id, tokens.access]);
 
     const handleModalOpen = (modalType) => {
-        console.log(`Opening ${modalType} modal`);
         switch (modalType) {
             case 'block':
                 setBlockUserModalOpen(true);

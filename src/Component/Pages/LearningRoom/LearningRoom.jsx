@@ -5,13 +5,13 @@ import { toast } from 'react-hot-toast';
 import LearningRoomHero from '../../Compound/LearningRoomHero/LearningRoomHero';
 import FeatureArticleSection from '../../Molecule/FeatureArticleSection/FeatureArticleSection';
 import FeatureVideoSection from '../../Molecule/FeatureVideoSection/FeatureVideoSection';
+import Spinner from '../../Atom/Spinner/Spinner';
+import Image from '../../../Assets/WhoWeAre_1.jpg';
 
 import { fetchArticles } from "../../../api/Articles/Articles";
 import { selectTokens } from '../../../store/user/userSlice';
 
-import Spinner from '../../Atom/Spinner/Spinner';
 
-import Image from '../../../Assets/WhoWeAre_1.jpg';
 
 const LearningRoom = () => {
     const [articles, setArticles] = useState([]);
@@ -25,7 +25,6 @@ const LearningRoom = () => {
             try {
                 const articlesResponse = await fetchArticles(tokens.access);
                 setArticles(articlesResponse.data);
-                console.log(articlesResponse.data[0]);
                 setLoading(false);
             } catch (error) {
                 setError(error);

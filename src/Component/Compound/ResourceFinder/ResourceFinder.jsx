@@ -23,7 +23,6 @@ const ResourceFinder = ({ resourceData, title, desc, route, isHoemPage = false }
         if (!isAuthenticated) {
             setShowModal(true);
         } else {
-            console.log(`Navigate to profile of user with ID: ${id}`);
             navigate(`/user-profile/${id}`);
         }
     };

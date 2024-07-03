@@ -31,9 +31,6 @@ const ReportUserModal = ({ isOpen, onRequestClose }) => {
     const [reportDescription, setReportDescription] = useState('');
 
     const handleReport = () => {
-        // Handle report submission logic here
-        console.log('Reporting user with reason:', reportReason);
-        console.log('Report description:', reportDescription);
         onRequestClose(); // Close modal after reporting
     };
 

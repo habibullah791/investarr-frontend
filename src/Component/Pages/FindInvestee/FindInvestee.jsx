@@ -15,7 +15,7 @@ const FindInvestees = () => {
         const fetchData = async () => {
             try {
                 const InvesteeResponse = await fetchInvesteeData();
-                console.log(InvesteeResponse);
+
                 setInvesteeData(InvesteeResponse);
 
                 setLoading(false);

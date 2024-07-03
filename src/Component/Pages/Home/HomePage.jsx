@@ -29,11 +29,9 @@ const HomePage = () => {
         const fetchData = async () => {
             try {
                 const investorResponse = await fetchInvestorData();
-                console.log(investorResponse);
                 setInvestorData(investorResponse);
 
                 const investeeResponse = await fetchInvesteeData();
-                console.log(investeeResponse);
                 setInvesteeData(investeeResponse);
 
                 setLoading(false);

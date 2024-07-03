@@ -6,6 +6,7 @@ import { fetchArticleById } from '../../../api/Articles/Articles';
 import { selectTokens } from '../../../store/user/userSlice';
 import { count } from 'firebase/firestore';
 import FeatureVideoSection from '../../Molecule/FeatureVideoSection/FeatureVideoSection';
+import VideoCard from '../../Compound/VideoCard/VideoCard';
 
 const ArticleDetail = () => {
     const { id } = useParams();
@@ -19,7 +20,6 @@ const ArticleDetail = () => {
             try {
                 const articlesResponse = await fetchArticleById(tokens.access, id);
                 setArticle(articlesResponse);
-                console.log("Article Response: ", articlesResponse); // This will log the article response
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -32,16 +32,13 @@ const ArticleDetail = () => {
     }, [tokens.access, id]);
 
 
-    const imageCount = article.images ? article.images.length : 0;
 
-    console.log("Image Count: ", imageCount); // This will log the number of images in the article
     return (
         <div className="h-full bg-white shadow-md rounded-md overflow-hidden">
-            {/* Hero Image */}
             <div className="relative h-96">
                 {article.images && article.images.length > 0 && (
                     <img
-                        src={article.images[0].image} // Assuming the first image is the hero image
+                        src={article.images[0].image}
                         alt={article.images[0].caption}
                         className="object-cover w-full h-full"
                     />
@@ -50,20 +47,17 @@ const ArticleDetail = () => {
                     <h1 className="text-4xl font-bold text-center">{article.title}</h1>
                 </div>
             </div>
-
-            {/* Article Content */}
             <div className="w-full flex justify-center items-start py-20 bg-gray-100">
                 <div className="w-11/12 md:w-4/5 flex flex-wrap justify-center items-center">
-                    <div className="w-full flex flex-col gap-3">
-                        <h1 className="text-4xl text-primary font-bold">{article.title}</h1>
+                    <div className="w-11/12 md:w-full flex flex-col gap-3">
+                        <h1 className='text-4xl text-primary font-bold'>{article.title}</h1>
                         <p className="text-gray-600 text-base">{article.description}</p>
                     </div>
-                    {/* there will be a hr */}
                     <hr className="w-full border-1 border-gray-400 my-8" />
-                    <div className="w-full flex flex-col gap-6">
+                    <div className="w-11/12 md:w-full flex flex-col gap-6">
                         {article.subtopics && article.subtopics.length > 0 && (
                             article.subtopics.map((subtopic, index) => (
-                                <div key={index} className="flex gap-6 items-center">
+                                <div key={index} className="flex md:flex-row flex-col gap-6 items-center">
                                     <div className="w-full md:w-3/5 flex flex-col gap-3">
                                         <h1 className="text-2xl text-primary font-bold">{subtopic.title}</h1>
                                         <p className="text-gray-600 text-base">{subtopic.description}</p>
@@ -81,13 +75,17 @@ const ArticleDetail = () => {
                             ))
                         )}
                     </div>
-                    {/* {article.videos && (
-                        <div className="w-full flex flex-col gap-3">
-                            <h1 className="text-2xl text-primary font-bold">Videos</h1>
-                            <FeatureVideoSection articles={article} />
+                    <hr className="w-full border-1 border-gray-400 my-8" />
+                    <div className="w-11/12 md:w-full flex flex-col gap-6">
+                        <h1 className="text-2xl text-primary font-bold">Some Videos Related to {article.title}</h1>
+                        <div className="w-full flex md:flex-row flex-col">
+                            {article.videos && article.videos.length > 0 && (
+                                article.videos.map((video, index) => (
+                                    <VideoCard key={index} video={video} />
+                                ))
+                            )}
                         </div>
-                    )} */}
-
+                    </div>
                 </div>
             </div>
         </div>

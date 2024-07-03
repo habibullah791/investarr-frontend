@@ -6,7 +6,6 @@ import { IoIosArrowDown } from "react-icons/io";
 
 
 const FAQ = ({ faqData }) => {
-    console.log("FAQ", faqData)
     const [activeIndex, setActiveIndex] = useState(null);
 
     const toggleFAQ = index => {

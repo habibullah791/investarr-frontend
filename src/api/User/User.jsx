@@ -2,11 +2,12 @@
 
 import axios from "axios";
 
-const API_URL = 'https://web-production-15a27.up.railway.app/api';
+// const API_URL = 'https://web-production-15a27.up.railway.app/api';
+const API_URL = 'http://127.0.0.1:8000/api';
+
 
 export const signup = async (formData) => {
     try {
-        console.log(formData)
         const response = await axios.post(`${API_URL}/signup/`, formData);
         return response.data;
     } catch (error) {
@@ -26,7 +27,6 @@ export const login = async (formData) => {
 
 export const logout = async (accessToken, refreshToken) => {
     try {
-        console.log(accessToken, refreshToken);
         const response = await axios.post(
             `${API_URL}/logout/`,
             {
