@@ -1,11 +1,8 @@
-// session-storage.js
-
 // Function to set an item in session storage
 export const setSessionStorage = (key, value) => {
     try {
         sessionStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
-        // Handle errors, such as storage being full
         console.error('Error setting session storage:', error);
     }
 };
@@ -16,7 +13,6 @@ export const getSessionStorage = (key) => {
         const storedItem = sessionStorage.getItem(key);
         return storedItem ? JSON.parse(storedItem) : null;
     } catch (error) {
-        // Handle errors, such as invalid JSON
         console.error('Error getting session storage:', error);
         return null;
     }
@@ -27,13 +23,13 @@ export const removeSessionStorage = (key) => {
     try {
         sessionStorage.removeItem(key);
     } catch (error) {
-        // Handle errors
         console.error('Error removing session storage:', error);
     }
 };
 
 
 
+// Function to set an item in local storage
 export const UploadSingleImageToCloud = async (image_file) => {
     const image_selected = image_file;
 
@@ -67,6 +63,42 @@ export const UploadSingleImageToCloud = async (image_file) => {
         return error;
     }
 }
+export const UploadMultipleImagesToCloud = async (image_files) => {
+    try {
+        const uploadedImageUrls = [];
+
+        for (const image_file of image_files) {
+            const formData = new FormData();
+            formData.append("file", image_file);
+            formData.append("upload_preset", "w2fsqv0e");
+
+            try {
+                const response = await fetch('https://api.cloudinary.com/v1_1/dl8ppbbgu/image/upload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest', // This header might be required by Cloudinary
+                    },
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    uploadedImageUrls.push(data.secure_url);
+                } else {
+                    console.error('Failed to upload image:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        }
+
+        return uploadedImageUrls;
+    } catch (error) {
+        console.log("error", error);
+        return [];
+    }
+}
+
 
 // Function to get a random number between 0 and max (exclusive)
 const getRandomIndex = (max) => {

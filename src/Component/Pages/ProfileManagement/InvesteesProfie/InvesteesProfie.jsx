@@ -8,13 +8,14 @@ import InputBox from '../../../Atom/InputBox/InputBox';
 import ImageField from '../../../Atom/ImageField/ImageField';
 import TextArea from '../../../Atom/TextArea/TextArea';
 import Spinner from '../../../Atom/Spinner/Spinner';
+import MultiImageField from '../../../Atom/MultiImageField/MultiImageField';
 
 import EmailPassword from '../EmailPass/EmailPass';
 import Verification from '../Verification/Verification';
 
 import { AreaOFIntrest } from '../../../../Constant/constants';
 import { updateInvesteePersonalInfo } from '../../../../api/User/User';
-import { UploadSingleImageToCloud } from '../../../../utils/utilityFunctions';
+import { UploadSingleImageToCloud, UploadMultipleImagesToCloud } from '../../../../utils/utilityFunctions';
 
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -71,6 +72,7 @@ const InvesteesProfie = () => {
 }
 
 const PersonalInfo = ({ user, tokens }) => {
+
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(false);
@@ -85,6 +87,7 @@ const PersonalInfo = ({ user, tokens }) => {
         startupName: user?.startup_name || '',
         startupIdea: user?.startup_idea || '',
         startupDescription: user?.startup_description || '',
+        galleryImages: user?.gallery_images || [],
     });
 
     const handleInputChange = (e) => {
@@ -103,6 +106,20 @@ const PersonalInfo = ({ user, tokens }) => {
 
     const handleUpdate = async () => {
         setLoading(true);
+
+        let galleryImages = formData.galleryImages;
+        if (galleryImages.length > 0) {
+            try {
+                const uploadedImages = await UploadMultipleImagesToCloud(galleryImages);
+                galleryImages = uploadedImages;
+            } catch (error) {
+                setFormData(prevFormData => ({ ...prevFormData, galleryImages: [] }));
+                toast.error('Failed to upload gallery images');
+                setLoading(false);
+                return;
+            }
+        }
+
         let formApiData = {
             first_name: formData.firstName,
             last_name: formData.lastName,
@@ -114,6 +131,7 @@ const PersonalInfo = ({ user, tokens }) => {
             startup_name: formData.startupName,
             startup_idea: formData.startupIdea,
             startup_description: formData.startupDescription,
+            gallery_images: galleryImages
         };
 
         if (formData.profilePicture !== user?.profile_pic_url) {
@@ -152,6 +170,7 @@ const PersonalInfo = ({ user, tokens }) => {
                         startup_name: formData.startupName,
                         startup_idea: formData.startupIdea,
                         startup_description: formData.startupDescription,
+                        gallery_images: galleryImages
                     }));
                 setLoading(false);
             })
@@ -160,6 +179,11 @@ const PersonalInfo = ({ user, tokens }) => {
                 console.error("Error updating profile: ", error);
                 setLoading(false);
             });
+    };
+
+    const handleImagesChange = (imageString) => {
+        setFormData({ ...formData, galleryImages: imageString });
+        console.log('Uploaded images:', imageString);
     };
 
     return (
@@ -183,8 +207,8 @@ const PersonalInfo = ({ user, tokens }) => {
                 }}
             />
             <h2 className="tracking-tighter text-2xl font-bold mb-4">Personal Info</h2>
-            <div className="grid grid-cols-2 gap-x-4 items-start">
-                <div className="w-full col-span-2 flex flex-row items-center md:justify-start justify-center mt-4 mb-8 border-b">
+            <div className="grid grid-cols-1 items-start">
+                <div className="w-full col-span-2 flex flex-row items-center justify-center mt-4 mb-8 border-b">
                     <ImageField
                         label="Profile Picture"
                         name="profilePicture"
@@ -192,30 +216,46 @@ const PersonalInfo = ({ user, tokens }) => {
                         defaultValue={formData.profilePicture}
                     />
                 </div>
-                <InputBox
-                    label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                />
-                <InputBox
-                    label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                />
-                <InputBox
-                    label="Phone Number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                />
-                <InputBox
-                    label="Address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                />
+                <div className="w-full col-span-2 flex flex-col items-center md:justify-start justify-center mt-4 mb-8 border-b">
+                    <MultiImageField
+                        onChange={handleImagesChange}
+                        defaultValues={formData.galleryImages}
+                    />
+                </div>
+                <div className='w-full grid md:grid-cols-2 gap-3'>
+                    <div className='w-full'>
+                        <InputBox
+                            label="First Name"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='w-full'>
+                        <InputBox
+                            label="Last Name"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='w-full'>
+                        <InputBox
+                            label="Phone Number"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='w-full'>
+                        <InputBox
+                            label="Address"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
                 <div className="col-span-2">
                     <label className='text-sm text-primary'>Area of Interest</label>
                     <Select
@@ -274,7 +314,7 @@ const PersonalInfo = ({ user, tokens }) => {
             </div>
             <button
                 onClick={handleUpdate}
-                className="bg-primary text-white px-4 py-2 rounded-lg mt-4 hover:bg-white hover:text-primary border border-primary"
+                className="w-full md:w-1/3 bg-primary text-white px-4 py-2 rounded-lg mt-4 hover:bg-white hover:text-primary border border-primary"
             >
                 Update
             </button>

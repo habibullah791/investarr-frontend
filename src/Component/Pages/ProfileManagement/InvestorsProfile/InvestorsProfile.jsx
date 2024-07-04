@@ -16,11 +16,12 @@ import Verifivation from '../Verification/Verification';
 
 import { AreaOFIntrest } from '../../../../Constant/constants';
 import { updateInvestorPersonalInfo } from '../../../../api/User/User';
-import { UploadSingleImageToCloud } from '../../../../utils/utilityFunctions';
+import { UploadMultipleImagesToCloud, UploadSingleImageToCloud } from '../../../../utils/utilityFunctions';
 
 
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
+import MultiImageField from '../../../Atom/MultiImageField/MultiImageField';
 
 const animatedComponents = makeAnimated();
 
@@ -88,6 +89,7 @@ const PersonalInfo = ({ user, tokens }) => {
         areaOfInterest: user?.area_of_interest || '',
         bio: user?.bio || '',
         phone: user?.phone_number || '',
+        galleryImages: user?.gallery_images || [],
     });
 
     const handleInputChange = (e) => {
@@ -106,6 +108,21 @@ const PersonalInfo = ({ user, tokens }) => {
 
     const handleUpdate = async () => {
         setLoading(true);
+
+        let galleryImages = formData.galleryImages;
+        if (galleryImages.length > 0) {
+            try {
+                const uploadedImages = await UploadMultipleImagesToCloud(galleryImages);
+                galleryImages = uploadedImages;
+            } catch (error) {
+                setFormData(prevFormData => ({ ...prevFormData, galleryImages: [] }));
+                toast.error('Failed to upload gallery images');
+                setLoading(false);
+                return;
+            }
+        }
+
+
         let formApiData = {
             first_name: formData.firstName,
             last_name: formData.lastName,
@@ -114,6 +131,7 @@ const PersonalInfo = ({ user, tokens }) => {
             bio: formData.bio,
             profile_pic_url: formData.profilePicture,
             phone_number: formData.phone,
+            gallery_images: galleryImages
         };
 
         if (formData.profilePicture !== user?.profile_pic_url) {
@@ -149,6 +167,7 @@ const PersonalInfo = ({ user, tokens }) => {
                         bio: formData.bio,
                         profile_pic_url: formData.profilePicture,
                         phone_number: formData.phone,
+                        gallery_images: galleryImages,
                     }));
                 setLoading(false);
             }
@@ -157,6 +176,13 @@ const PersonalInfo = ({ user, tokens }) => {
                 setLoading(false);
             });
     };
+
+
+    const handleImagesChange = (imageString) => {
+        setFormData({ ...formData, galleryImages: imageString });
+        console.log('Uploaded images:', imageString);
+    };
+
 
     return (
         <div>
@@ -180,12 +206,18 @@ const PersonalInfo = ({ user, tokens }) => {
             />
             <h2 className="tracking-tighter text-2xl font-bold mb-4">Personal Info</h2>
             <div className="grid grid-cols-2 gap-x-4 items-start">
-                <div className="w-full col-span-2 flex flex-row items-center md:justify-start justify-center mt-4 mb-8 border-b">
+                <div className="w-full col-span-2 flex flex-row items-center justify-center mt-4 mb-8 border-b">
                     <ImageField
                         label="Profile Picture"
                         name="profilePicture"
                         onChange={handleImageChange}
                         defaultValue={formData.profilePicture}
+                    />
+                </div>
+                <div className="w-full col-span-2 flex flex-col items-center md:justify-start justify-center mt-4 mb-8 border-b">
+                    <MultiImageField
+                        onChange={handleImagesChange}
+                        defaultValues={formData.galleryImages}
                     />
                 </div>
                 <InputBox

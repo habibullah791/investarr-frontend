@@ -19,7 +19,7 @@ const UserProfile = () => {
     const [userData, setUserData] = useState(null);
     const [blockUserModalOpen, setBlockUserModalOpen] = useState(false);
     const [reportUserModalOpen, setReportUserModalOpen] = useState(false);
-    const [legalSupportModalOpen, setLegalSupportModalOpen] = useState(false); // Fix for useState
+    const [legalSupportModalOpen, setLegalSupportModalOpen] = useState(false);
 
     const tokens = useSelector(selectTokens);
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -118,7 +118,6 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-
 const CustomInformation = ({ title, data, description }) => {
     return (
         <div className="flex flex-col space-y-4 mt-4 mb-10"> {/* Add spacing for better readability */}
@@ -130,16 +129,14 @@ const CustomInformation = ({ title, data, description }) => {
                     {data.map((item, index) => (
                         <div key={index} className="bg-white p-4 w-4/5">
                             <p className="font-bold text-blue-500">{item.title}</p>
-                            {Array.isArray(item.label) ? (
-                                <ul className="list-disc pl-4"> {/* Consistent list styling */}
-                                    {item.label.map((label, index) => (
-                                        <li key={index}>
-                                            <p>{label}</p>
-                                        </li>
+                            {item.title === "Area of Interest" && item.label ? (
+                                <ul className='grid grid-col-1 md:grid-cols-3 gap-2 list-disc list-inside'>
+                                    {item.label.split(',').map((interest, index) => (
+                                        <li key={index} className="text-gray-900">{interest}</li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="">{item.label}</p>
+                                <p className="text-gray-900">{item.label}</p>
                             )}
                         </div>
                     ))}
@@ -151,3 +148,4 @@ const CustomInformation = ({ title, data, description }) => {
         </div>
     );
 };
+

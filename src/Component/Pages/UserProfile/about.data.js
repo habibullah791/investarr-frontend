@@ -12,7 +12,7 @@ export const PersonalInformation = (data) => [
 ];
 
 export const StartupInformation = (data) => [
-    { title: "Startup Idea", label: data?.startup_idea },
     { title: "Startup Name", label: data?.startup_name },
+    { title: "Startup Idea", label: data?.startup_idea },
     { title: "Startup Description", label: data?.startup_description }
 ];
