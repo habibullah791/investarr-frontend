@@ -12,6 +12,7 @@ export default {
         tertiary: '#866429',
         quaternary: '#2e3d86',
         quinary: '#d5dcff',
+        text_primary: '#002D40',
 
       },
     },

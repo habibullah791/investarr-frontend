@@ -31,12 +31,12 @@ const ResourceFinder = ({ resourceData, title, desc, route, isHoemPage = false }
         <>
             <div className='w-full flex flex-col justify-start items-start gap-5'>
                 {isHoemPage && (
-                    <div className='w-full flex flex-row justify-between items-center'>
-                        <div className='flex flex-col gap-3 justify-start items-start'>
+                    <div className='w-full flex flex-col md:flex-row justify-between items-center'>
+                        <div className='flex flex-col gap-2 md:gap-3 md:justify-start justify-center items-center md:items-start mb-7 md:mb-0'>
                             <h1 className='text-4xl font-bold text-primary'>{title}</h1>
                             <p className='text-sm text-secondary'>{desc}</p>
                         </div>
-                        <Link to={route} className='text-xl bg-primary text-white py-2 px-6 rounded-lg hover:text-primary hover:bg-white hover:border hover:border-primary'>View All</Link>
+                        <Link to={route} className='w-full md:w-1/8 text-xl bg-primary text-center text-white py-2 px-6 rounded-lg hover:text-primary hover:bg-white hover:border hover:border-primary'>View All</Link>
                     </div>
                 )}
                 <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8'>

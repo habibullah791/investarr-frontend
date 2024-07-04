@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';  // Import useState from React
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { MdBlockFlipped, MdOutlineReportProblem, MdEmail, MdLocationOn } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { TiSupport } from "react-icons/ti";
+import { FaLocationDot } from "react-icons/fa6";
 
 import { fetchUserData } from '../../../api/User/User';
-import { PersonalInformation, StartupInformation } from './about.data';
+import { PersonalInformation, StartupInformation, ContactInformation } from './about.data';
 import { useSelector } from 'react-redux';
 import { selectTokens, selectIsAuthenticated } from '../../../store/user/userSlice';
 
 import LegalSupportModal from '../../Compound/LegalSupportModal/LegalSupportModal';
 import BlockUserModal from '../../Compound/BlockUserModal/BlockUserModal';
 import ReportUserModal from '../../Compound/ReportUserModal/ReportUserModal';
-
 
 const UserProfile = () => {
     const { id } = useParams();
@@ -64,22 +64,30 @@ const UserProfile = () => {
 
     return (
         <div className='w-full flex justify-center items-start my-16'>
-            <div className='w-4/5 flex flex-col justify-between items-start'>
-                <h1 className='text-2xl font-bold'>User Profile</h1>
-                <div className='flex flex-row items-end space-x-6 my-10'>
-                    <div className='flex flex-col justify-center items-center space-y-4'>
-                        <img
-                            src={userData?.profile_pic_url}
-                            alt="Profile"
-                            className="w-32 h-32 rounded-full object-cover"
-                        />
-                        <Link
-                            to={`/message/${id}`}
-                            className="w-full bg-primary text-white px-4 py-2 rounded-md text-center"
-                            title="Send Message"
-                        >
-                            Message
-                        </Link>
+            <div className='w-11/12 md:w-4/5 grid grid-cols-12 gap-8'>
+                <div className='col-span-12 md:col-span-3 flex flex-col gap-8 order-1 md:order-2'>
+                    <div className='flex flex-col justify-center items-center shadow-lg rounded-lg py-6 px-4'>
+                        <div className="flex flex-col items-center space-y-4">
+                            <img
+                                src={userData?.profile_pic_url}
+                                alt="Profile"
+                                className="w-32 h-32 rounded-full object-cover"
+                            />
+                            <div className="flex flex-col items-center">
+                                <h1 className="text-xl font-bold text-text_primary">{userData?.first_name + " " + userData?.last_name}</h1>
+                                <div className="flex items-center space-x-2">
+                                    <FaLocationDot size={18} className='text-primary' />
+                                    <p className="text-base text-text_secondary">{userData?.address}</p>
+                                </div>
+                            </div>
+                            <Link
+                                to={`/message/${id}`}
+                                className="w-full bg-primary text-white px-4 py-2 rounded-md text-center"
+                                title="Send Message"
+                            >
+                                Message
+                            </Link>
+                        </div>
                         <div className="flex space-x-4 mt-5">
                             {links.map((link, index) => (
                                 <button
@@ -93,19 +101,15 @@ const UserProfile = () => {
                             ))}
                         </div>
                     </div>
-                    <div className='flex flex-col'>
-                        {details.map((detail, index) => (
-                            <div key={index} className='flex items-center space-x-2'>
-                                {detail.icon}
-                                <p className='text-lg'>{detail.value}</p>
-                            </div>
-                        ))}
-                    </div>
+                    <CustomContactInformation title="Contact Information" data={ContactInformation(userData)} />
+                    <Gallery images={userData?.gallery_images} />
                 </div>
-                <CustomInformation title="Personal Information" data={PersonalInformation(userData)} />
-                {userData?.user_type === 'Investee' && (
-                    <CustomInformation title="Startup Information" data={StartupInformation(userData)} />
-                )}
+                <div className='col-span-12 md:col-span-9 order-2 md:order-1'>
+                    <CustomInformation title="Personal Information" data={PersonalInformation(userData)} />
+                    {userData?.user_type === 'Investee' && (
+                        <CustomInformation title="Startup Information" data={StartupInformation(userData)} />
+                    )}
+                </div>
             </div>
 
             {/* Modals */}
@@ -120,23 +124,28 @@ export default UserProfile;
 
 const CustomInformation = ({ title, data, description }) => {
     return (
-        <div className="flex flex-col space-y-4 mt-4 mb-10"> {/* Add spacing for better readability */}
-            <div className="text-lg font-bold">  {/* Emphasize title */}
+        <div className="flex flex-col space-y-4 mt-4 mb-10">
+            <h2 className="text-lg font-bold text-text_primary">
                 {title}
-            </div>
+            </h2>
             {data && (
-                <div className="grid grid-cols-1 gap-4 shadow-lg rounded-lg overflow-hidden py-12 px-3">
+                <div className="grid grid-cols-1 shadow-lg rounded-lg overflow-hidden py-6 px-3">
                     {data.map((item, index) => (
-                        <div key={index} className="bg-white p-4 w-4/5">
-                            <p className="font-bold text-blue-500">{item.title}</p>
+                        <div key={index} className="bg-white px-4 py-3">
+                            <h3 className="font-bold text-text_primary">{item.title}</h3>
                             {item.title === "Area of Interest" && item.label ? (
-                                <ul className='grid grid-col-1 md:grid-cols-3 gap-2 list-disc list-inside'>
+                                <ul className='grid grid-col-1 md:grid-cols-3 list-disc list-inside mt-1'>
                                     {item.label.split(',').map((interest, index) => (
-                                        <li key={index} className="text-gray-900">{interest}</li>
+                                        <li key={index} className="text-gray-900 text-base">{interest}</li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-gray-900">{item.label}</p>
+                                <p
+                                    className={`w-11/12 text-gray-900 text-base mt-1 ${item.title === 'Verification Status' ? (item.label === 'Verified' ? 'text-green-500' : 'text-red-500') : ''
+                                        }`}
+                                >
+                                    {item.label}
+                                </p>
                             )}
                         </div>
                     ))}
@@ -148,4 +157,46 @@ const CustomInformation = ({ title, data, description }) => {
         </div>
     );
 };
+
+
+const CustomContactInformation = ({ data }) => {
+    return (
+        <div className="flex flex-col space-y-4 py-6 px-4 shadow-lg rounded-lg">
+            <h2 className="text-lg font-bold text-primary">
+                Contact Information
+            </h2>
+            {data && (
+                <div className="grid grid-cols-1 gap-4">
+                    {data.map((item, index) => (
+                        <div key={index} className="bg-white flex flex-col gap-1">
+                            <h3 className="font-bold text-text_primary">{item.title}</h3>
+                            <p className="text-gray-900">{item.label}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+const Gallery = ({ images }) => {
+    return (
+
+        <div className="flex flex-col space-y-4 py-6 px-4 shadow-lg rounded-lg">
+            <h2 className="text-lg font-bold text-primary">
+                Gallery
+            </h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {images && images.map((image, index) => (
+                    <img
+                        key={index}
+                        src={image}
+                        alt={`Gallery Image ${index + 1}`}
+                        className={`w-full h-32 object-cover rounded-lg ${index === 0 ? 'col-span-1 md:col-span-2' : ''}`}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+}
 

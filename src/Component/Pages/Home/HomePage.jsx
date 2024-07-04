@@ -51,7 +51,7 @@ const HomePage = () => {
             <HeroSection
                 title={
                     <>
-                        Shape your <span className="font-bold">Portfolio</span> for the{" "}
+                        Shape your <span className="text-text_primary font-bold">Portfolio</span> for the{" "}
                         <span className="font-bold text-primary">best returns</span>
                         <br />
                         with Investarr
@@ -73,7 +73,7 @@ const HomePage = () => {
             <PerksCard />
             <div className="w-full flex justify-center py-20">
                 <div className="w-4/5">
-                    <div className="text-4xl mb-6 text-center">
+                    <div className="text-text_primary text-4xl mb-6 text-center">
                         An easy
                         {` `}
                         <span className="text-primary font-bold">

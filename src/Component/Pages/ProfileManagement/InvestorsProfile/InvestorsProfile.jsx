@@ -49,8 +49,8 @@ const InvestorsProfile = () => {
 
 
     return (
-        <div className="flex">
-            <div className="w-1/4 h-screen border-r">
+        <div className="flex md:flex-row flex-col md:gap-0 gap-8">
+            <div className="w-full md:w-1/4 md:h-screen md:border-r">
                 <div
                     className={`p-2 cursor-pointer font-semibold ${activeTab === 'personalInfo' ? 'bg-gray-300 text-black' : 'bg-white text-gray-400'}`}
                     onClick={() => setActiveTab('personalInfo')}
@@ -70,7 +70,7 @@ const InvestorsProfile = () => {
                     Verification
                 </div>
             </div>
-            <div className="w-3/4 px-4">
+            <div className="w-full md:w-3/4 px-4">
                 {renderContent()}
             </div>
         </div>
@@ -280,7 +280,7 @@ const PersonalInfo = ({ user, tokens }) => {
             </div>
             <button
                 onClick={handleUpdate}
-                className="bg-primary text-white px-4 py-2 rounded-lg mt-4 hover:bg-white hover:text-primary border border-primary"
+                className="w-full md:w-1/3 bg-primary text-white px-4 py-2 rounded-lg mt-4 hover:bg-white hover:text-primary border border-primary"
             >
                 Update
             </button>

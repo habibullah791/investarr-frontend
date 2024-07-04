@@ -27,7 +27,7 @@ const StatsSection = () => {
                         <h1 className="tracking-tighter text-4xl md:text-4xl lg:text-4xl font-bold text-primary group-hover:text-white">
                             {stat.investors || stat.invested || stat.investees}{stat.label}
                         </h1>
-                        <p className='text-3xl md:text-2xl font-semibold group-hover:text-white'>
+                        <p className='text-text_primary text-3xl md:text-2xl font-semibold group-hover:text-white'>
                             {stat.text}
                         </p>
                     </div>

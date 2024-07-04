@@ -22,7 +22,7 @@ const FAQ = ({ faqData }) => {
                         onClick={() => toggleFAQ(index)}
                         className="w-full px-4 py-6 text-left flex justify-between items-center focus:outline-none border-b border-gray-300"
                     >
-                        <span className="text-2xl">{faq.question}</span>
+                        <span className="text-text_primary text-2xl">{faq.question}</span>
                         <span className='text-xl font-semibold'>{activeIndex === index ? <IoIosArrowUp /> : <IoIosArrowDown />}</span>
                     </button>
                     {activeIndex === index && (
