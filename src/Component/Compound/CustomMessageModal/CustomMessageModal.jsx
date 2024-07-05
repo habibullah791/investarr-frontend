@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { IoIosCloseCircle } from "react-icons/io";
+import { Link } from 'react-router-dom';
 
 
 Modal.setAppElement('#root'); // Set the root element for accessibility
@@ -13,8 +14,8 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        width: '90%', // Adjusted for mobile
-        maxWidth: '600px', // Adjusted for larger screens
+        width: '90%',
+        maxWidth: '600px',
         padding: '10px',
         border: '2px solid #ccc',
         borderRadius: '8px',
@@ -23,12 +24,11 @@ const customStyles = {
     },
 };
 
-const MembershipModal = ({ isOpen, onRequestClose, title, desc, buttonText }) => {
+const CustomMessageModal = ({ isOpen, onRequestClose, title, desc, buttonText, goto }) => {
     const [membershipType, setMembershipType] = useState('');
 
     const handleSelectMembership = (type) => {
         setMembershipType(type);
-        // Here you can implement logic to handle the selected membership type
     };
 
     return (
@@ -52,15 +52,16 @@ const MembershipModal = ({ isOpen, onRequestClose, title, desc, buttonText }) =>
                     <p className="w-4/5 mb-4 text-center">
                         {desc}
                     </p>
-                    <button
+                    <Link
+                        to={goto ? goto : '/dashboard'}
                         className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-white hover:text-primary border border-primary hover:border-primary transition duration-300 ease-in-out"
                     >
-                        {buttonText}
-                    </button>
+                        {goto ? buttonText : 'Go to Dashboard'}
+                    </Link>
                 </div>
             </div>
         </Modal>
     );
 };
 
-export default MembershipModal;
+export default CustomMessageModal;

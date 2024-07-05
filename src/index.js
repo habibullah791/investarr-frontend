@@ -41,7 +41,7 @@ const router = createBrowserRouter(
       <Route path="find-investors" element={<FindInvestors />} />
       <Route path="find-investees" element={<FindInvestees />} />
       <Route path="user-profile/:id" element={<UserProfile />} />
-      <Route path="profile-management/" element={<ProfileManagement />} />
+      <Route path="dashboard/" element={<ProfileManagement />} />
       <Route path="contact-us" element={<ContactUs />} />
       <Route path="membership" element={<Membership />} />
       <Route path="/message" element={<Messages />} />

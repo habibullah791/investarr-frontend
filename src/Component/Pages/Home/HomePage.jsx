@@ -13,29 +13,32 @@ import Spinner from "../../Atom/Spinner/Spinner";
 import HeroBanner_1 from "../../../Assets/HeroBanner_1.png";
 
 import { fetchInvestorData, fetchInvesteeData } from "../../../api/User/User";
-import { faqData } from '../../../Constant/constants'
+import { faqData } from '../../../Constant/constants';
 import CallToAction from "../../Compound/CallToAction/CallToAction";
-
-
 
 const HomePage = () => {
     const [investorData, setInvestorData] = useState(null);
     const [investeeData, setInvesteeData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
-                const investorResponse = await fetchInvestorData();
+                const [investorResponse, investeeResponse] = await Promise.all([
+                    fetchInvestorData(),
+                    fetchInvesteeData()
+                ]);
+
+                console.log("Investor Data:", investorResponse);
+                console.log("Investee Data:", investeeResponse);
+
                 setInvestorData(investorResponse);
-
-                const investeeResponse = await fetchInvesteeData();
                 setInvesteeData(investeeResponse);
-
                 setLoading(false);
             } catch (error) {
+                console.error("Error fetching data:", error);
                 setError(error);
                 setLoading(false);
             }
@@ -45,6 +48,7 @@ const HomePage = () => {
     }, []);
 
     if (loading) return <Spinner />;
+    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <>

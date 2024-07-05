@@ -4,7 +4,7 @@ export const PersonalInformation = (data) => [
     // { title: "Name", label: data?.first_name + " " + data?.last_name },
     // { title: "Profile Picture", label: data?.profile_pic_url },
     { title: "Address", label: data?.address },
-    { title: "Verification Status", label: data?.verification_status ? "Verified" : "Not Verified" },
+    { title: "Verification Status", label: data?.verification_status ?? "Not Verified" },
     { title: "Area of Interest", label: data?.area_of_interest },
     { title: "Bio", label: data?.bio },
     // { title: "Membership Tier", label: data?.membership_tier },

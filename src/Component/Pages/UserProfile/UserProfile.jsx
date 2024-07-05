@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdBlockFlipped, MdOutlineReportProblem, MdEmail, MdLocationOn } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { TiSupport } from "react-icons/ti";
 import { FaLocationDot } from "react-icons/fa6";
 
-import { fetchUserData } from '../../../api/User/User';
+import { fetchUserData, getUserVerificationStatus } from '../../../api/User/User';
 import { PersonalInformation, StartupInformation, ContactInformation } from './about.data';
 import { useSelector } from 'react-redux';
 import { selectTokens, selectIsAuthenticated } from '../../../store/user/userSlice';
@@ -13,20 +13,76 @@ import { selectTokens, selectIsAuthenticated } from '../../../store/user/userSli
 import LegalSupportModal from '../../Compound/LegalSupportModal/LegalSupportModal';
 import BlockUserModal from '../../Compound/BlockUserModal/BlockUserModal';
 import ReportUserModal from '../../Compound/ReportUserModal/ReportUserModal';
+import CustomMessageModal from '../../Compound/CustomMessageModal/CustomMessageModal';
 
 const UserProfile = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+
+
     const [userData, setUserData] = useState(null);
     const [blockUserModalOpen, setBlockUserModalOpen] = useState(false);
     const [reportUserModalOpen, setReportUserModalOpen] = useState(false);
     const [legalSupportModalOpen, setLegalSupportModalOpen] = useState(false);
+    const [showCustomMessageModal, setShowCustomMessageModal] = useState(false);
+    const [CustomMessageModalMessage, setCustomMessageModalMessage] = useState({
+        title: '',
+        desc: '',
+        buttonText: '',
+        goto: ''
+    });
+
 
     const tokens = useSelector(selectTokens);
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
+    const goToChatScreen = async () => {
+        console.log('IS AUTHENTICATED:', isAuthenticated);
+        if (!isAuthenticated) {
+            alert('Please login to continue');
+            return;
+        }
+
+        try {
+            const data = await getUserVerificationStatus(tokens.access);
+            const { membership_tier, verification_status } = data.data;
+
+            if (membership_tier === 'Free' && verification_status === 'Basic') {
+                setCustomMessageModalMessage({
+                    title: 'Membership & Verification Required',
+                    desc: 'You are not eligible to chat. Upgrade your membership and complete your verification to access this feature.',
+                    buttonText: 'Upgrade & Verify',
+                    goto: ''
+                });
+                setShowCustomMessageModal(true);
+            } else if (membership_tier === 'Free') {
+                setCustomMessageModalMessage({
+                    title: 'Membership Required',
+                    desc: 'You are not eligible to chat. Upgrade your membership to access this feature.',
+                    buttonText: 'Upgrade',
+                    goto: '/membership'
+                });
+                setShowCustomMessageModal(true);
+            } else if (verification_status === 'Basic') {
+                setCustomMessageModalMessage({
+                    title: 'Verification Required',
+                    desc: 'You are not eligible to chat. Complete your verification to access this feature.',
+                    buttonText: 'Verify',
+                    goto: '/dashboard'
+                });
+                setShowCustomMessageModal(true);
+            } else {
+                navigate(`/message/${id}`);
+            }
+        } catch (error) {
+            console.error('Error fetching user verification status:', error);
+        }
+    };
+
     useEffect(() => {
         fetchUserData(tokens.access, id)
             .then((data) => {
+                console.log('User data:', data);
                 setUserData(data);
             })
             .catch((error) => {
@@ -81,7 +137,7 @@ const UserProfile = () => {
                                 </div>
                             </div>
                             <Link
-                                to={`/message/${id}`}
+                                onClick={goToChatScreen}
                                 className="w-full bg-primary text-white px-4 py-2 rounded-md text-center"
                                 title="Send Message"
                             >
@@ -116,6 +172,14 @@ const UserProfile = () => {
             <BlockUserModal isOpen={blockUserModalOpen} onRequestClose={() => setBlockUserModalOpen(false)} />
             <ReportUserModal isOpen={reportUserModalOpen} onRequestClose={() => setReportUserModalOpen(false)} />
             <LegalSupportModal isOpen={legalSupportModalOpen} onRequestClose={() => setLegalSupportModalOpen(false)} />
+            <CustomMessageModal
+                isOpen={showCustomMessageModal}
+                onRequestClose={() => setShowCustomMessageModal(false)}
+                title={CustomMessageModalMessage.title}
+                desc={CustomMessageModalMessage.desc}
+                buttonText={CustomMessageModalMessage.buttonText}
+                goto={CustomMessageModalMessage.goto}
+            />
         </div>
     );
 };
@@ -141,11 +205,20 @@ const CustomInformation = ({ title, data, description }) => {
                                 </ul>
                             ) : (
                                 <p
-                                    className={`w-11/12 text-gray-900 text-base mt-1 ${item.title === 'Verification Status' ? (item.label === 'Verified' ? 'text-green-500' : 'text-red-500') : ''
+                                    className={`w-11/12 text-base mt-1 ${item.title === 'Verification Status'
+                                        ? (item.label === 'Basic'
+                                            ? 'text-red-500'
+                                            : (item.label === 'Level 1'
+                                                ? 'text-yellow-600'
+                                                : (item.label === 'Level 2'
+                                                    ? 'text-green-500'
+                                                    : 'text-gray-900')))
+                                        : ''
                                         }`}
                                 >
                                     {item.label}
                                 </p>
+
                             )}
                         </div>
                     ))}

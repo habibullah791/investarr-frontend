@@ -214,7 +214,7 @@ const Navbar = () => {
                                         <ul className="w-40 absolute top-full left-0 bg-white shadow-md rounded-md mt-2">
                                             <li>
                                                 <Link
-                                                    to="/profile-management"
+                                                    to="/dashboard"
                                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
                                                     onClick={closeDropdown}
                                                 >

@@ -2,8 +2,8 @@
 
 import axios from "axios";
 
-const API_URL = 'https://web-production-15a27.up.railway.app/api';
-// const API_URL = 'http://127.0.0.1:8000/api';
+// const API_URL = 'https://web-production-15a27.up.railway.app/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 
 export const signup = async (formData) => {
@@ -129,6 +129,23 @@ export const updateEmailPassword = async (accessToken, investorId, formData) => 
         const response = await axios.patch(
             `${API_URL}/email-pass/update/${investorId}/`,
             formData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const getUserVerificationStatus = async (accessToken) => {
+    try {
+        const response = await axios.get(
+            `${API_URL}/user/verification-status/`,
             {
                 headers: {
                     'Content-Type': 'application/json',
