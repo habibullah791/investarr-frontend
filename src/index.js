@@ -28,6 +28,7 @@ import FAQPage from './Component/Pages/FAQPage/FAQPage';
 import Page404 from './Component/Pages/Page404/Page404';
 import LearningRoom from './Component/Pages/LearningRoom/LearningRoom';
 import ArticleDetail from './Component/Pages/ArticleDetail/ArticleDetail';
+import PaymentForm from './Component/Pages/Payment/PaymentForm';
 
 
 const router = createBrowserRouter(
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
       <Route path="contact-us" element={<ContactUs />} />
       <Route path="membership" element={<Membership />} />
       <Route path="/message" element={<Messages />} />
+      <Route path="/payment" element={<PaymentForm />} />
       <Route path="message/:userID" element={<Messages />} />
       <Route path="learning-room" element={<LearningRoom />} />
       <Route path="/article/:id" element={<ArticleDetail />} />

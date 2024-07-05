@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchArticleById } from '../../../api/Articles/Articles';
 import { selectTokens } from '../../../store/user/userSlice';
-import { count } from 'firebase/firestore';
-import FeatureVideoSection from '../../Molecule/FeatureVideoSection/FeatureVideoSection';
 import VideoCard from '../../Compound/VideoCard/VideoCard';
 
 const ArticleDetail = () => {
@@ -59,15 +57,15 @@ const ArticleDetail = () => {
                             article.subtopics.map((subtopic, index) => (
                                 <div key={index} className="flex md:flex-row flex-col gap-6 items-center">
                                     <div className="w-full md:w-3/5 flex flex-col gap-3">
-                                        <h1 className="text-2xl text-primary font-bold">{subtopic.title}</h1>
-                                        <p className="text-gray-600 text-base">{subtopic.description}</p>
+                                        <h1 className="text-xl text-primary ">{subtopic.title}</h1>
+                                        <p className="w-11/12 text-gray-600 text-base">{subtopic.description}</p>
                                     </div>
                                     {article.images && article.images.length > index && (
                                         <div className="w-full md:w-2/5 h-full">
                                             <img
                                                 src={article.images[index].image}
                                                 alt={article.images[index].caption}
-                                                className="w-full h-56 object-cover"
+                                                className="w-full h-56 object-cover rounded-lg shadow-md"
                                             />
                                         </div>
                                     )}
