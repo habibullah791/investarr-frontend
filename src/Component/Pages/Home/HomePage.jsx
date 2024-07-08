@@ -30,13 +30,13 @@ const HomePage = () => {
                     fetchInvestorData(),
                     fetchInvesteeData()
                 ]);
+                setLoading(false);
 
                 console.log("Investor Data:", investorResponse);
                 console.log("Investee Data:", investeeResponse);
 
                 setInvestorData(investorResponse);
                 setInvesteeData(investeeResponse);
-                setLoading(false);
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError(error);
