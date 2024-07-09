@@ -13,10 +13,10 @@ const HeroSection = ({
         <div className='w-full flex justify-center items-start my-16'>
             <div className='w-11/12 lg:w-4/5 flex flex-col lg:flex-row justify-between items-center gap-12'>
                 <div className='w-full lg:w-3/5 flex flex-col justify-start items-start mb-8 lg:mb-0'>
-                    <h1 className='text-text_primary text-4xl md:text-5xl lg:text-6xl leading-none'>
+                    {/* <h1 className='text-text_primary text-4xl md:text-5xl lg:text-6xl leading-none'> */}
+                    <h1 className="text-text_primary text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl">
                         {title}
                     </h1>
-
                     <p className='text-gray-600 text-lg mb-4'>
                         {description}
                     </p>

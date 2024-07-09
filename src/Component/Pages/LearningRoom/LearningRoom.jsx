@@ -16,27 +16,28 @@ import { selectTokens } from '../../../store/user/userSlice';
 const LearningRoom = () => {
     const [articles, setArticles] = useState([]);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
+    // const [loading, setLoading] = useState(true);
 
     const tokens = useSelector(selectTokens);
 
+    const fetchData = async () => {
+        try {
+            const articlesResponse = await fetchArticles(tokens.access);
+            console.log(articlesResponse.data);
+            // setLoading(false);
+            setArticles(articlesResponse.data);
+        } catch (error) {
+            // setLoading(false);
+            setError(error);
+            toast.error('Failed to load articles');
+        }
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const articlesResponse = await fetchArticles(tokens.access);
-                setArticles(articlesResponse.data);
-                setLoading(false);
-            } catch (error) {
-                setError(error);
-                setLoading(false);
-                toast.error('Failed to load articles');
-            }
-        };
 
         fetchData();
-    }, [tokens.access]);
+    }, []);
 
-    if (loading) return <Spinner />;
+    // if (loading) return <Spinner />;
 
     return (
         <>
@@ -48,8 +49,8 @@ const LearningRoom = () => {
                     buttonLink="/get-started"
                     imageUrl={Image}
                 />
-                <FeatureArticleSection articles={articles ? articles.slice(0, 3) : []} />
-                <FeatureVideoSection articles={articles} />
+                {articles && <FeatureArticleSection articles={articles ? articles.slice(0, 3) : []} />}
+                {articles && <FeatureVideoSection articles={articles} />}
             </div>
         </>
     );

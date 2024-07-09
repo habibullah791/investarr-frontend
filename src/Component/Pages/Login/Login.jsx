@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import InputBox from '../../Atom/InputBox/InputBox';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Spinner from '../../Atom/Spinner/Spinner';
 import imageSrc from '../../../Assets/HeroBanner_1.png';
@@ -98,7 +98,7 @@ const LoginPage = () => {
                             </button>
                             {error && <p className="text-red-500">{error}</p>}
                         </form>
-                        <p className="mt-4 text-sm text-gray-600">Don't have an account? <a href="/signup" className="text-primary">Sign up</a></p>
+                        <p className="mt-4 text-sm text-gray-600">Don't have an account? <Link to="/signup" className="text-primary">Sign up</Link></p>
                     </div>
                     <div className='md:block hidden w-1/2'>
                         <img

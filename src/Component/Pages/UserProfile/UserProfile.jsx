@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdBlockFlipped, MdOutlineReportProblem, MdEmail, MdLocationOn } from "react-icons/md";
 import { FaUserAlt } from "react-icons/fa";
 import { TiSupport } from "react-icons/ti";
+import { MdVerified } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 
 import { fetchUserData, getUserVerificationStatus } from '../../../api/User/User';
@@ -18,7 +19,8 @@ import CustomMessageModal from '../../Compound/CustomMessageModal/CustomMessageM
 const UserProfile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-
+    const tokens = useSelector(selectTokens);
+    const isAuthenticated = useSelector(selectIsAuthenticated);
 
     const [userData, setUserData] = useState(null);
     const [blockUserModalOpen, setBlockUserModalOpen] = useState(false);
@@ -31,10 +33,6 @@ const UserProfile = () => {
         buttonText: '',
         goto: ''
     });
-
-
-    const tokens = useSelector(selectTokens);
-    const isAuthenticated = useSelector(selectIsAuthenticated);
 
     const goToChatScreen = async () => {
         console.log('IS AUTHENTICATED:', isAuthenticated);
@@ -90,6 +88,7 @@ const UserProfile = () => {
             });
     }, [id, tokens.access]);
 
+
     const handleModalOpen = (modalType) => {
         switch (modalType) {
             case 'block':
@@ -130,8 +129,17 @@ const UserProfile = () => {
                                 className="w-32 h-32 rounded-full object-cover"
                             />
                             <div className="flex flex-col items-center">
-                                <h1 className="text-xl font-bold text-text_primary">{userData?.first_name + " " + userData?.last_name}</h1>
-                                <div className="flex items-center space-x-2">
+                                <div className='flex flex-row items-center space-x-2 mb-3'>
+                                    <h2 className="text-lg font-bold text-text_primary">{userData?.first_name + " " + userData?.last_name}</h2>
+                                    <div className=''>
+                                        {userData?.verification_status === 'Basic' ? (
+                                            <></>
+                                        ) : (
+                                            <MdVerified className='text-primary' />
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="flex space-x-2">
                                     <FaLocationDot size={18} className='text-primary' />
                                     <p className="text-base text-text_secondary">{userData?.address}</p>
                                 </div>
@@ -158,7 +166,11 @@ const UserProfile = () => {
                         </div>
                     </div>
                     <CustomContactInformation title="Contact Information" data={ContactInformation(userData)} />
-                    <Gallery images={userData?.gallery_images} />
+                    {/* if there are images in galleryonly then show gallery */}
+                    {userData?.gallery_images && userData?.gallery_images.length > 0 &&
+                        <Gallery images={userData?.gallery_images} />
+                    }
+
                 </div>
                 <div className='col-span-12 md:col-span-9 order-2 md:order-1'>
                     <CustomInformation title="Personal Information" data={PersonalInformation(userData)} />
@@ -254,7 +266,6 @@ const CustomContactInformation = ({ data }) => {
 
 const Gallery = ({ images }) => {
     return (
-
         <div className="flex flex-col space-y-4 py-6 px-4 shadow-lg rounded-lg">
             <h2 className="text-lg font-bold text-primary">
                 Gallery

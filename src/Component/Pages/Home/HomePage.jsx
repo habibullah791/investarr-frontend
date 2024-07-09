@@ -32,9 +32,6 @@ const HomePage = () => {
                 ]);
                 setLoading(false);
 
-                console.log("Investor Data:", investorResponse);
-                console.log("Investee Data:", investeeResponse);
-
                 setInvestorData(investorResponse);
                 setInvesteeData(investeeResponse);
             } catch (error) {
@@ -55,10 +52,8 @@ const HomePage = () => {
             <HeroSection
                 title={
                     <>
-                        Shape your <span className="text-text_primary font-bold">Portfolio</span> for the{" "}
-                        <span className="font-bold text-primary">best returns</span>
-                        <br />
-                        with Investarr
+                        Shape your Portfolio <br />for the
+                        best returns <br />with Investarr
                     </>
                 }
                 description="We help you invest in the best companies in the world. Our platform is designed to help you grow your wealth. We offer a wide range of investment options to help you achieve your financial goals."

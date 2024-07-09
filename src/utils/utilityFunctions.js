@@ -104,15 +104,21 @@ export const UploadMultipleImagesToCloud = async (image_files) => {
 const getRandomIndex = (max) => {
     return Math.floor(Math.random() * max);
 };
-
-// Function to get three random videos
+// Function to get up to three random videos
 export const getRandomVideos = (articles) => {
     const selectedArticles = [];
     const selectedVideos = [];
 
-    // Select three random articles
-    while (selectedArticles.length < 3) {
-        const randomIndex = getRandomIndex(articles.length);
+    // Filter articles that contain videos
+    const articlesWithVideos = articles.filter(article => article.videos.length > 0);
+
+    if (articlesWithVideos.length === 0) {
+        return [];
+    }
+
+    // Select up to three random articles
+    while (selectedArticles.length < 3 && selectedArticles.length < articlesWithVideos.length) {
+        const randomIndex = getRandomIndex(articlesWithVideos.length);
         if (!selectedArticles.includes(randomIndex)) {
             selectedArticles.push(randomIndex);
         }
@@ -120,8 +126,8 @@ export const getRandomVideos = (articles) => {
 
     // Select one random video from each selected article
     selectedArticles.forEach((index) => {
-        const randomVideoIndex = getRandomIndex(articles[index].videos.length);
-        selectedVideos.push(articles[index].videos[randomVideoIndex]);
+        const randomVideoIndex = getRandomIndex(articlesWithVideos[index].videos.length);
+        selectedVideos.push(articlesWithVideos[index].videos[randomVideoIndex]);
     });
 
     return selectedVideos;

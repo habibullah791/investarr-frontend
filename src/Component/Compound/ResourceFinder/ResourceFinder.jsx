@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 
+import { MdVerified } from "react-icons/md";
 
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../../store/user/userSlice';
@@ -26,6 +27,8 @@ const ResourceFinder = ({ resourceData, title, desc, route, isHoemPage = false }
             navigate(`/user-profile/${id}`);
         }
     };
+
+    console.log("Resource Data:", resourceData[0]);
 
     return (
         <>
@@ -52,12 +55,20 @@ const ResourceFinder = ({ resourceData, title, desc, route, isHoemPage = false }
                                     <img src={data.profile_pic_url} alt={`${data.first_name} ${data.last_name}`} className='w-full h-64 object-cover' />
                                 </Link>
                                 <div className='flex flex-col p-4'>
-                                    <Link
-                                        onClick={handleUserProfile(data.id)}
-                                    >
-                                        <h1 className='text-lg font-bold text-primary'>{`${data.username}`}</h1>
-                                        {/* <h1 className='text-lg font-bold text-primary'>{`${data.first_name} ${data.last_name}`}</h1> */}
-                                    </Link>
+                                    <div className='flex flex-row gap-2 items-center w-full'>
+                                        <Link
+                                            onClick={handleUserProfile(data.id)}
+                                        >
+                                            <h1 className='text-lg font-bold text-primary'>{`${data.username}`}</h1>
+                                        </Link>
+                                        <div className=''>
+                                            {data.verification_status === 'Basic' ? (
+                                                <></>
+                                            ) : (
+                                                <MdVerified className='text-primary' />
+                                            )}
+                                        </div>
+                                    </div>
                                     <div className='flex flex-row gap-2 items-center'>
                                         <p className='text-gray-400 text-xs'>{data.address}</p>
                                         <FaLocationDot className='text-primary' />
@@ -76,12 +87,20 @@ const ResourceFinder = ({ resourceData, title, desc, route, isHoemPage = false }
                                     <img src={data.profile_pic_url} alt={`${data.first_name} ${data.last_name}`} className='w-full h-64 object-cover' />
                                 </Link>
                                 <div className='flex flex-col p-4'>
-                                    <Link
-                                        onClick={handleUserProfile(data.id)}
-                                    >
-                                        <h1 className='text-lg font-bold text-primary'>{`${data.username}`}</h1>
-                                        {/* <h1 className='text-lg font-bold text-primary'>{`${data.first_name} ${data.last_name}`}</h1> */}
-                                    </Link>
+                                    <div className='flex flex-row gap-2 items-center w-full'>
+                                        <Link
+                                            onClick={handleUserProfile(data.id)}
+                                        >
+                                            <h1 className='text-lg font-bold text-primary'>{`${data.username}`}</h1>
+                                        </Link>
+                                        <div className=''>
+                                            {data.verification_status === 'Basic' ? (
+                                                <></>
+                                            ) : (
+                                                <MdVerified className='text-primary' />
+                                            )}
+                                        </div>
+                                    </div>
                                     <div className='flex flex-row gap-2 items-center'>
                                         <p className='text-gray-400 text-xs'>{data.address}</p>
                                         <FaLocationDot className='text-primary' />

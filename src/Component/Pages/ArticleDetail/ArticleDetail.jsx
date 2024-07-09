@@ -75,11 +75,13 @@ const ArticleDetail = () => {
                     </div>
                     <hr className="w-full border-1 border-gray-400 my-8" />
                     <div className="w-11/12 md:w-full flex flex-col gap-6">
-                        <h1 className="text-2xl text-primary font-bold">Some Videos Related to {article.title}</h1>
                         <div className="w-full flex md:flex-row flex-col">
                             {article.videos && article.videos.length > 0 && (
                                 article.videos.map((video, index) => (
-                                    <VideoCard key={index} video={video} />
+                                    <>
+                                        <h1 className="text-2xl text-primary font-bold">Some Videos Related to {article.title}</h1>
+                                        <VideoCard key={index} video={video} />
+                                    </>
                                 ))
                             )}
                         </div>

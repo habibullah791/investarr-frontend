@@ -29,6 +29,7 @@ import Page404 from './Component/Pages/Page404/Page404';
 import LearningRoom from './Component/Pages/LearningRoom/LearningRoom';
 import ArticleDetail from './Component/Pages/ArticleDetail/ArticleDetail';
 import PaymentForm from './Component/Pages/Payment/PaymentForm';
+import CertifiedUsers from './Component/Pages/CertifiedUsers/CertifiedUsers';
 
 
 const router = createBrowserRouter(
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="find-investors" element={<FindInvestors />} />
       <Route path="find-investees" element={<FindInvestees />} />
+      <Route path="certified-users" element={<CertifiedUsers />} />
       <Route path="user-profile/:id" element={<UserProfile />} />
       <Route path="dashboard/" element={<ProfileManagement />} />
       <Route path="contact-us" element={<ContactUs />} />

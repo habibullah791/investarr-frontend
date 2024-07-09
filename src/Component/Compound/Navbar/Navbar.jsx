@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FiMenu, FiX } from 'react-icons/fi';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
+import { FiMenu, FiX } from 'react-icons/fi';
+import { MdVerified } from "react-icons/md";
 
 import Logo from '../../../Assets/Logo.png';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../../../store/user/userSlice';
-
-import { useNavigate } from 'react-router-dom';
-
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -116,7 +116,53 @@ const Navbar = () => {
                             <FiX className="text-white text-2xl cursor-pointer" onClick={closeMobileMenu} />
                         </div>
                     ) : (
-                        <FiMenu className="text-2xl cursor-pointer" onClick={toggleMobileMenu} />
+                        <div className="flex items-center gap-4">
+                            {isAuthenticated && (
+                                <li class="relative list-none">
+                                    <button
+                                        onClick={toggleDropdown}
+                                        className="text-base focus:outline-none"
+                                    >
+                                        <img
+                                            src={user?.profile_pic_url}
+                                            alt="profile"
+                                            className="w-12 h-12 rounded-full object-cover"
+                                        />
+                                    </button>
+                                    {dropdownOpen && (
+                                        <ul className="w-40 absolute top-full right-2 bg-white shadow-lg rounded-md mt-2 border border-gray-200">
+                                            <li>
+                                                <Link
+                                                    to="/dashboard"
+                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
+                                                    onClick={closeDropdown}
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    to="/message"
+                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
+                                                    onClick={closeDropdown}
+                                                >
+                                                    Messages
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="block w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-200 focus:outline-none"
+                                                >
+                                                    Logout
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    )}
+                                </li>
+                            )}
+                            <FiMenu className="text-2xl cursor-pointer" onClick={toggleMobileMenu} />
+                        </div>
                     )}
                 </div>
 
@@ -125,34 +171,31 @@ const Navbar = () => {
                     <nav role="navigation" className="flex flex-row">
                         <ul className="flex justify-end items-center gap-12">
                             <li>
-                                <Link to="/" className="text-lg hover:text-primary">
+                                <Link to="/" className="text-base hover:text-primary">
                                     Home
                                 </Link>
                             </li>
-                            {/* <li>
-                                <Link to="/about" className="text-lg hover:text-primary">
-                                    About
-                                </Link>
-                            </li> */}
                             <li>
-                                <Link to="/find-investors" className="text-lg hover:text-primary">
+                                <Link to="/find-investors" className="text-base hover:text-primary">
                                     Find Investor
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/find-investees" className="text-lg hover:text-primary">
+                                <Link to="/find-investees" className="text-base hover:text-primary">
                                     Find Startups
                                 </Link>
                             </li>
-                            {/* <li>
-                                <Link to="/contact-us" className="text-lg hover:text-primary">
-                                    Contact Us
+                            <li className="relative flex items-center">
+                                <div className="absolute inset-0 border-2 border-dashed border-primary rounded-lg animate-pulse"></div>
+                                <Link to="/certified-users" className="relative z-10 flex items-center text-base hover:text-primary px-4 py-2">
+                                    Certified
+                                    <MdVerified className="ml-2 text-primary text-xl" />
                                 </Link>
-                            </li> */}
+                            </li>
                             <li className="relative">
                                 <button
                                     onClick={toggleResourceDropdown}
-                                    className="text-lg focus:outline-none"
+                                    className="text-base focus:outline-none"
                                 >
                                     Resources
                                 </button>
@@ -202,7 +245,7 @@ const Navbar = () => {
                                 <li className="relative">
                                     <button
                                         onClick={toggleDropdown}
-                                        className="text-lg focus:outline-none"
+                                        className="text-base focus:outline-none"
                                     >
                                         <img
                                             src={user?.profile_pic_url}
@@ -275,7 +318,7 @@ const Navbar = () => {
                                 <li>
                                     <Link
                                         to="/"
-                                        className="text-lg text-white"
+                                        className="text-base text-white"
                                         onClick={closeMobileMenu}
                                     >
                                         Home
@@ -283,49 +326,94 @@ const Navbar = () => {
                                 </li>
                                 <li>
                                     <Link
-                                        to="/about"
-                                        className="text-lg text-white"
+                                        to="/find-investors"
+                                        className="text-base text-white"
                                         onClick={closeMobileMenu}
                                     >
-                                        About
+                                        Find Investor
                                     </Link>
                                 </li>
                                 <li>
                                     <Link
-                                        to="/volunteers"
-                                        className="text-lg text-white"
+                                        to="/find-investees"
+                                        className="text-base text-white"
                                         onClick={closeMobileMenu}
                                     >
-                                        Volunteer
+                                        Find Startups
                                     </Link>
                                 </li>
-                                {/* Conditionally render Profile link */}
-                                {isAuthenticated && (
-                                    <li>
-                                        <Link
-                                            to="/profile"
-                                            className="text-lg text-white"
-                                            onClick={closeMobileMenu}
-                                        >
-                                            Profile
-                                        </Link>
-                                    </li>
+                                <li className="relative">
+                                    <button
+                                        onClick={toggleResourceDropdown}
+                                        className="text-white text-base focus:outline-none"
+                                    >
+                                        Resources
+                                    </button>
+                                    {resourceDropdownOpen && (
+                                        <ul className="w-40 absolute top-full left-0 bg-white shadow-md rounded-md mt-2">
+                                            <li>
+                                                <Link
+                                                    to="/learning-room"
+                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
+                                                    onClick={closeResourceDropdown}
+                                                >
+                                                    Learning Room
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    to="/contact-us"
+                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
+                                                    onClick={closeResourceDropdown}
+                                                >
+                                                    Contact Us
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    to="/about"
+                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
+                                                    onClick={closeResourceDropdown}
+                                                >
+                                                    About Us
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link
+                                                    to="/faq"
+                                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                                    onClick={closeResourceDropdown}
+                                                >
+                                                    FAQ
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    )}
+                                </li>
+                                {!isAuthenticated && (
+                                    <div className="flex flex-row gap-2">
+                                        <li>
+                                            <Link to="/login" className="text-white text-base">
+                                                Login
+                                            </Link>
+                                        </li>
+                                        <div className="text-white">
+                                            |
+                                        </div>
+                                        <li>
+                                            <Link to="/signup" className="text-white text-base">
+                                                Create Account
+                                            </Link>
+                                        </li>
+                                    </div>
                                 )}
-                                <li className="mt-4">
-                                    <Link
-                                        to="/donation"
-                                        className="text-lg bg-white px-5 py-3 text-primary border border-primary rounded-2xl hover:text-primary"
-                                        onClick={closeMobileMenu}
-                                    >
-                                        Donate Now!
-                                    </Link>
-                                </li>
                             </ul>
                         </nav>
                     </div>
-                )}
-            </header>
-        </div>
+                )
+                }
+            </header >
+        </div >
     );
 };
 
