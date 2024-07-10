@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { MdVerified } from "react-icons/md";
 
-import Logo from '../../../Assets/Logo.png';
+import Logo from '../../../Assets/Logo/cover_1.png';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -105,7 +105,11 @@ const Navbar = () => {
             >
                 <div className="flex items-center gap-2">
                     <Link to="/" className="text-xl md:text-3xl font-nter">
-                        <img src={Logo} alt="logo" className="w-44 h-12" />
+                        <img
+                            src={Logo}
+                            alt="logo"
+                            className="w-44 h-16 object-contain"
+                        />
                     </Link>
                 </div>
 
@@ -169,7 +173,7 @@ const Navbar = () => {
                 {/* Navigation */}
                 <div className="hidden md:block">
                     <nav role="navigation" className="flex flex-row">
-                        <ul className="flex justify-end items-center gap-12">
+                        <ul className="flex justify-end items-center gap-6">
                             <li>
                                 <Link to="/" className="text-base hover:text-primary">
                                     Home
@@ -287,12 +291,12 @@ const Navbar = () => {
                             ) : (
                                 <>
                                     <li>
-                                        <Link to="/login" className="text-xl">
+                                        <Link to="/login" className="text-base">
                                             Login
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="/signup" className="text-xl bg-primary text-white py-2 px-6 rounded-lg hover:text-primary hover:bg-white hover:border hover:border-primary">
+                                        <Link to="/signup" className="text-base bg-primary text-white py-2 px-6 rounded-lg hover:text-primary hover:bg-white hover:border hover:border-primary">
                                             Create Account
                                         </Link>
                                     </li>
