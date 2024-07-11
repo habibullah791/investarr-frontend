@@ -122,7 +122,7 @@ const Navbar = () => {
                     ) : (
                         <div className="flex items-center gap-4">
                             {isAuthenticated && (
-                                <li class="relative list-none">
+                                <li className="relative list-none">
                                     <button
                                         onClick={toggleDropdown}
                                         className="text-base focus:outline-none"

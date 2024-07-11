@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 import { FaCheck } from "react-icons/fa6";
 import LightICon from '../../../Assets/thought.png';
@@ -21,11 +22,11 @@ const Membership = () => {
     const [loading, setLoading] = useState(false);
 
     const [paymentFormDetails, setPaymentFormDetails] = useState({
-        id: 'AA1122-3344ZZ',
+        id: uuidv4(),
         currency: '',
         amount: 0,
         description: '',
-        callback_url: 'investarr.herokuapp.com/api/payment/ipn',
+        callback_url: 'https://investarr-frontend.vercel.app/payment-success',
         notification_id: '',
         billing_address: {
             email_address: '',
@@ -50,7 +51,7 @@ const Membership = () => {
             if (response.status === "200") {
                 console.log("Authentication Successful", response);
                 setAuthToken(response.token);
-                const RegisterIPNURLResponse = await RegisterIPNURL('https://investarr.herokuapp.com/api/payment/ipn', 'GET', response.token);
+                const RegisterIPNURLResponse = await RegisterIPNURL('https://investarr-frontend.vercel.app/payment-success', 'GET', response.token);
                 console.log("Register IPN URL Response", RegisterIPNURLResponse);
 
                 // Update paymentFormDetails using functional form of setState
@@ -92,7 +93,7 @@ const Membership = () => {
             const response = await SubmitOrderRequest(paymentFormDetails, authToken);
             if (response.status === "200") {
                 console.log("Order Request Submitted Successfully", response);
-                window.location.href = response.redirect_url;
+                window.open(response.redirect_url, '_blank');
             } else {
                 console.error("Failed to submit order request:", response);
             }
@@ -113,33 +114,11 @@ const Membership = () => {
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
                                 <div className=''>
                                     <InputBox
-                                        label="Phone Number"
-                                        placeholder="Phone Number"
-                                        name="phone_number"
-                                        type="tel"
-                                        value={paymentFormDetails.billing_address.phone_number}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className=''>
-                                    <InputBox
                                         label="Email Address"
                                         placeholder="Email Address"
                                         name="email_address"
                                         type="email"
                                         value={paymentFormDetails.billing_address.email_address}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                            </div>
-                            <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
-                                <div className=''>
-                                    <InputBox
-                                        label="Phone Number"
-                                        placeholder="Phone Number"
-                                        name="phone_number"
-                                        type="tel"
-                                        value={paymentFormDetails.billing_address.phone_number}
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -154,6 +133,7 @@ const Membership = () => {
                                             { value: 'USD', label: 'USD' },
                                             { value: 'KES', label: 'KES' },
                                             { value: 'EUR', label: 'EUR' },
+                                            { value: 'TZS', label: 'TZS' },
                                         ]}
                                     />
                                 </div>

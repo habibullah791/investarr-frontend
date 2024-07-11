@@ -30,6 +30,7 @@ import LearningRoom from './Component/Pages/LearningRoom/LearningRoom';
 import ArticleDetail from './Component/Pages/ArticleDetail/ArticleDetail';
 import PaymentForm from './Component/Pages/Payment/PaymentForm';
 import CertifiedUsers from './Component/Pages/CertifiedUsers/CertifiedUsers';
+import PaymentSuccessPage from './Component/Pages/PaymentSuccessPage/PaymentSuccessPage';
 
 
 const router = createBrowserRouter(
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
       <Route path="dashboard/" element={<ProfileManagement />} />
       <Route path="contact-us" element={<ContactUs />} />
       <Route path="membership" element={<Membership />} />
+      <Route path="payment-success" element={<PaymentSuccessPage />} />
       <Route path="/message" element={<Messages />} />
       <Route path="/payment" element={<PaymentForm />} />
       <Route path="message/:userID" element={<Messages />} />
