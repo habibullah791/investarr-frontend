@@ -23,11 +23,8 @@ const LearningRoom = () => {
     const fetchData = async () => {
         try {
             const articlesResponse = await fetchArticles(tokens.access);
-            console.log(articlesResponse.data);
-            // setLoading(false);
             setArticles(articlesResponse.data);
         } catch (error) {
-            // setLoading(false);
             setError(error);
             toast.error('Failed to load articles');
         }

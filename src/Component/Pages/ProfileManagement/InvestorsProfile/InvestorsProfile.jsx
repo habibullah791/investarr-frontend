@@ -180,7 +180,6 @@ const PersonalInfo = ({ user, tokens }) => {
 
     const handleImagesChange = (imageString) => {
         setFormData({ ...formData, galleryImages: imageString });
-        console.log('Uploaded images:', imageString);
     };
 
 

@@ -16,9 +16,6 @@ const PaymentForm = () => {
                 reference: '12345',
                 email
             });
-
-            // Handle the response from Pesapal
-            console.log(response.data);
         } catch (error) {
             console.error('Error initiating payment:', error);
         }

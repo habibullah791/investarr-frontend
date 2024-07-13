@@ -35,7 +35,6 @@ const UserProfile = () => {
     });
 
     const goToChatScreen = async () => {
-        console.log('IS AUTHENTICATED:', isAuthenticated);
         if (!isAuthenticated) {
             alert('Please login to continue');
             return;
@@ -80,7 +79,6 @@ const UserProfile = () => {
     useEffect(() => {
         fetchUserData(tokens.access, id)
             .then((data) => {
-                console.log('User data:', data);
                 setUserData(data);
             })
             .catch((error) => {

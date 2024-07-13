@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
+
 
 import { FaCheck } from "react-icons/fa6";
 import LightICon from '../../../Assets/thought.png';
@@ -12,14 +15,20 @@ import Spinner from '../../Atom/Spinner/Spinner.jsx';
 
 import { membershipPlans } from './membershipplans.data.js';
 
+import { selectTokens } from '../../../store/user/userSlice';
+import { storeOrderTrackId } from '../../../api/User/User.js';
 import { Authentication, RegisterIPNURL, SubmitOrderRequest } from '../../../api/Payment/Payment.js';
 
 const Membership = () => {
 
     const navigate = useNavigate();
+
+    const tokens = useSelector(selectTokens);
+
     const [authToken, setAuthToken] = useState('');
-    const [showPaymentForm, setShowPaymentForm] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [selectedPlan, setSelectedPlan] = useState(null);
+    const [showPaymentForm, setShowPaymentForm] = useState(false);
 
     const [paymentFormDetails, setPaymentFormDetails] = useState({
         id: uuidv4(),
@@ -44,20 +53,19 @@ const Membership = () => {
         }
     });
 
-    const handleAuth = async (planPrice) => {
+    const handleAuth = async (plan) => {
+        setSelectedPlan(plan);
         try {
             setLoading(true);
             const response = await Authentication();
             if (response.status === "200") {
-                console.log("Authentication Successful", response);
                 setAuthToken(response.token);
                 const RegisterIPNURLResponse = await RegisterIPNURL('https://investarr-frontend.vercel.app/payment-success', 'GET', response.token);
-                console.log("Register IPN URL Response", RegisterIPNURLResponse);
 
                 // Update paymentFormDetails using functional form of setState
                 setPaymentFormDetails(prevPaymentFormDetails => ({
                     ...prevPaymentFormDetails,
-                    amount: planPrice,
+                    amount: plan.price,
                     notification_id: RegisterIPNURLResponse.ipn_id
                 }));
 
@@ -86,18 +94,33 @@ const Membership = () => {
             });
         }
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(paymentFormDetails);
+        setLoading(true);
         try {
             const response = await SubmitOrderRequest(paymentFormDetails, authToken);
             if (response.status === "200") {
-                console.log("Order Request Submitted Successfully", response);
-                window.open(response.redirect_url, '_blank');
+                const formData = {
+                    merchant_reference: response.merchant_reference,
+                    order_tracking_id: response.order_tracking_id,
+                    membership_tier: selectedPlan.name,
+                };
+                const orderTrackIdResponse = await storeOrderTrackId(tokens.access, formData);
+                if (orderTrackIdResponse.statusCode === 201) {
+                    setLoading(false);
+                    window.open(response.redirect_url, '_blank');
+                }
+                else {
+                    setLoading(false);
+                    toast.error("Something went wrong. Please try again later.");
+                }
             } else {
+                setLoading(false);
                 console.error("Failed to submit order request:", response);
             }
         } catch (error) {
+            setLoading(false);
             console.error("Error submitting order request:", error);
         }
     };
@@ -186,7 +209,7 @@ const Membership = () => {
                                         ))}
                                     </ul>
                                     <Link
-                                        onClick={() => handleAuth(plan.price)}
+                                        onClick={() => handleAuth(plan)}
                                         className={`w-full bg-primary py-2 px-4 rounded mt-auto ${index === membershipPlans.length - 1 ? 'bg-white text-primary' : 'text-white'}`}
                                     >
                                         {plan.buttonTitle}

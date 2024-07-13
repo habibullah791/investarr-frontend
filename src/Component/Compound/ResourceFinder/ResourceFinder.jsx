@@ -28,8 +28,6 @@ const ResourceFinder = ({ resourceData, title, desc, route, isHoemPage = false }
         }
     };
 
-    console.log("Resource Data:", resourceData[0]);
-
     return (
         <>
             <div className='w-full flex flex-col justify-start items-start gap-5'>

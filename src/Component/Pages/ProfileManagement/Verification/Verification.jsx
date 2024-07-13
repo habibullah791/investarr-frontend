@@ -20,7 +20,6 @@ const Verification = ({ user, tokens }) => {
     const handleVerifyEmail = (codes) => {
         setLoadingVerifyEmail(true);
         codes = codes.join('');
-        console.log('Verification codes:', codes);
 
         setTimeout(() => {
             setLoadingVerifyEmail(false);
@@ -32,7 +31,6 @@ const Verification = ({ user, tokens }) => {
     const handleVerifyPhone = (codes) => {
         setLoadingVerifyPhone(true);
         codes = codes.join('');
-        console.log('Verification codes:', codes);
 
         setTimeout(() => {
             setLoadingVerifyPhone(false);

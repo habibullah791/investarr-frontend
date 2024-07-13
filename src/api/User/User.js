@@ -2,8 +2,8 @@
 
 import axios from "axios";
 
-const API_URL = 'https://web-production-15a27.up.railway.app/api';
-// const API_URL = 'http://127.0.0.1:8000/api';
+// const API_URL = 'https://web-production-15a27.up.railway.app/api';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 
 export const signup = async (formData) => {
@@ -173,5 +173,67 @@ export const getUserCertifiedUsers = async (accessToken) => {
         return response.data;
     } catch (error) {
         throw error.response.data;
+    }
+};
+
+
+export const storeOrderTrackId = async (accessToken, formData) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/order/track/`,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const retrieveOrder = async (accessToken, orderTrackingId) => {
+    try {
+        const response = await axios.get(
+            `${API_URL}/order/retrieve/${orderTrackingId}/`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        // Log the error for debugging
+        console.error("Error retrieving order:", error);
+
+        // Throw a stringified version of the error response data
+        throw JSON.stringify(error.response.data);
+    }
+};
+
+export const verifyPayment = async (accessToken, userId, paymentStatus) => {
+    try {
+        const response = await axios.put(
+            `${API_URL}/user/${userId}/payment-verification/`,
+            { payment_status: paymentStatus },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        // Log the error for debugging
+        console.error("Error verifying payment:", error);
+
+        // Throw a stringified version of the error response data
+        throw JSON.stringify(error.response.data);
     }
 };
