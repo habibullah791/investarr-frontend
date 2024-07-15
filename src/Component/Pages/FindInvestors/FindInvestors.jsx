@@ -51,11 +51,11 @@ const FindInvestors = () => {
         <div className='w-full flex justify-center items-start my-8'>
             <div className='w-11/12 md:w-4/5 flex flex-col justify-between items-stretch gap-8'>
                 <div className='w-full flex flex-col md:flex-row justify-between items-center gap-4'>
-                    <div className='flex flex-col gap-3 justify-start items-start'>
+                    <div className='flex flex-col gap-3 justify-center md:justify-start items-center md:items-start'>
                         <h1 className='text-4xl font-bold text-primary'>Investors</h1>
                         <p className='text-sm text-secondary'>Find the best investors for your startup</p>
                     </div>
-                    <div className=''>
+                    <div className='w-full'>
                         <FilterDropdown
                             filters={filters}
                             setFilters={setFilters}
