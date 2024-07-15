@@ -51,6 +51,15 @@ export const logout = async (accessToken, refreshToken) => {
     }
 };
 
+export const resetPassword = async (formData) => {
+    const response = await axios.post(`${API_URL}/password-reset/`, formData, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.data;
+};
+
 
 export const fetchInvestorData = async () => {
     try {
@@ -225,6 +234,30 @@ export const verifyPayment = async (accessToken, userId, paymentStatus) => {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        // Log the error for debugging
+        console.error("Error verifying payment:", error);
+
+        // Throw a stringified version of the error response data
+        throw JSON.stringify(error.response.data);
+    }
+};
+
+export const SendUserEmail = async (formData) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/email/submit/`,
+            {
+                formData
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Authorization: `Bearer ${accessToken}`
                 }
             }
         );

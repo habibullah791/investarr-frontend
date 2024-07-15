@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
 import InputBox from '../../Atom/InputBox/InputBox';
 import toast, { Toaster } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import Spinner from '../../Atom/Spinner/Spinner';
+import { resetPassword } from '../../../api/User/User';  // Adjust this path as needed
 import imageSrc from '../../../Assets/HeroBanner_1.png';
 
-import { login } from '../../../api/User/User';
-import { useDispatch } from 'react-redux';
-import { setUser, setTokens } from '../../../store/user/userSlice';
-
-const LoginPage = () => {
-    const dispatch = useDispatch();
+const PasswordUpdatePage = () => {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         username: '',
-        password: ''
+        password: '',
+        confirm_password: ''
     });
 
     const handleChange = (e) => {
@@ -29,19 +24,15 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        login(formData).then((loginResponse) => {
-            dispatch(setUser(loginResponse.user));
-            dispatch(setTokens({
-                access: loginResponse.access,
-                refresh: loginResponse.refresh,
-            }));
+        try {
+            const response = await resetPassword(formData);
             setLoading(false);
-            navigate('/');
-            setError('');
-        }).catch((error) => {
+            toast.success(response.message);
+            navigate('/login');
+        } catch (error) {
             setLoading(false);
-            toast.error('Invalid Credentials');
-        });
+            toast.error(error.response.data.message); // Display error message
+        }
     };
 
     return (
@@ -67,12 +58,12 @@ const LoginPage = () => {
             <div className='w-full flex justify-center items-start my-16'>
                 <div className='w-4/5 flex flex-col md:flex-row justify-between items-start'>
                     <div className='w-full md:w-2/5 flex flex-col justify-between items-center gap-6'>
-                        <h1 className="tracking-tighter text-primary text-3xl md:text-5xl font-bold">Welcome back!</h1>
+                        <h1 className="tracking-tighter text-primary text-3xl md:text-5xl font-bold">Update Password</h1>
                         <form
                             onSubmit={handleSubmit}
                             className='w-full flex flex-col justify-center items-center gap-3'
                         >
-                            <h2 className="tracking-tighter text-primary text-lg md:text-2xl mb-6">Log in to your account</h2>
+                            <h2 className="tracking-tighter text-primary text-lg md:text-2xl mb-6">Enter your username and new password</h2>
                             <div className='w-full'>
                                 <InputBox
                                     label={"Username"}
@@ -82,9 +73,16 @@ const LoginPage = () => {
                                     onChange={handleChange}
                                 />
                                 <InputBox
-                                    label={"Password"}
-                                    placeholder={"Password"}
+                                    label={"New Password"}
+                                    placeholder={"New Password"}
                                     name="password"
+                                    type="password"
+                                    onChange={handleChange}
+                                />
+                                <InputBox
+                                    label={"Confirm Password"}
+                                    placeholder={"Confirm Password"}
+                                    name="confirm_password"
                                     type="password"
                                     onChange={handleChange}
                                 />
@@ -93,15 +91,9 @@ const LoginPage = () => {
                                 type="submit"
                                 className='w-full bg-primary text-white py-2 px-6 rounded-lg hover:text-primary hover:bg-white hover:border-2 hover:border-primary'
                             >
-                                {loading ? 'Logging in...' : 'Log In'}
+                                {loading ? 'Updating...' : 'Update Password'}
                             </button>
-                            {error && <p className="text-red-500">{error}</p>}
                         </form>
-                        <div className="flex flex-col items-center gap-4 w-full">
-                            <Link to="/password-update" className="text-sm text-primary">Forgot Password?</Link>
-                            <hr className="w-1/2 border-1 border-gray-300" />
-                            <p className="text-sm text-gray-600">Don't have an account? <Link to="/signup" className="text-primary">Sign up</Link></p>
-                        </div>
                     </div>
                     <div className='md:block hidden w-1/2'>
                         <img
@@ -116,4 +108,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default PasswordUpdatePage;

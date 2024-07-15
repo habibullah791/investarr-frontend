@@ -17,6 +17,7 @@ import HomePage from './Component/Pages/Home/HomePage';
 import AboutPage from './Component/Pages/About/AboutPage';
 import SignUp from './Component/Pages/SignUp/SignUp';
 import Login from './Component/Pages/Login/Login';
+import PasswordUpdatePage from './Component/Pages/PasswordUpdatePage/PasswordUpdatePage';
 import FindInvestors from './Component/Pages/FindInvestors/FindInvestors';
 import FindInvestees from './Component/Pages/FindInvestee/FindInvestee';
 import UserProfile from './Component/Pages/UserProfile/UserProfile';
@@ -40,6 +41,7 @@ const router = createBrowserRouter(
       <Route path="about" element={<AboutPage />} />
       <Route path="signup" element={<SignUp />} />
       <Route path="login" element={<Login />} />
+      <Route path="password-update" element={<PasswordUpdatePage />} />
       <Route path="find-investors" element={<FindInvestors />} />
       <Route path="find-investees" element={<FindInvestees />} />
       <Route path="certified-users" element={<CertifiedUsers />} />

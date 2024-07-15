@@ -1,7 +1,29 @@
 import React from 'react';
 import InputBox from '../../Atom/InputBox/InputBox';
 
+import { Link } from 'react-router-dom';
+
+import axios from 'axios';
+
+const SendUserEmail = async (formData) => {
+    try {
+        await axios.post('/email/submit/', formData);
+        console.log('Email sent successfully!');
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
+};
+
 const CallToAction = () => {
+
+    const SendEmail = () => {
+        const formData = {
+            subject: 'New User',
+            message: 'New User has shown interest in Investarr',
+        };
+        SendUserEmail(formData);
+    };
+
     return (
         <div className='w-full flex justify-center items-start my-8 py-4'>
             <div className='w-11/12 md:w-4/5 flex flex-col justify-center items-center text-center'>
@@ -15,13 +37,18 @@ const CallToAction = () => {
                         />
                     </div>
                     <div className='w-11/12 md:w-2/5'>
-                        <button className='bg-primary text-white px-4 py-2 rounded-md w-full'>Get Started</button> {/* Ensure button takes full width */}
+                        <button
+                            onClick={SendEmail}
+                            className='bg-primary text-white px-4 py-2 rounded-md w-full'
+                        >
+                            Get Started
+                        </button>
                     </div>
                 </div>
                 <p className='w-11/12 md:w-2/5 text-gray-600' >Our team will reach out to you to discuss your needs and find the best match.</p>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default CallToAction;

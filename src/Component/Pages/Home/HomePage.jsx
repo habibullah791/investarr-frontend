@@ -15,6 +15,7 @@ import HeroBanner_1 from "../../../Assets/HeroBanner_1.png";
 import { fetchInvestorData, fetchInvesteeData } from "../../../api/User/User";
 import { faqData } from '../../../Constant/constants';
 import CallToAction from "../../Compound/CallToAction/CallToAction";
+import ServicesSection from "../../Molecule/ServicesSection/ServicesSection";
 
 const HomePage = () => {
     const [investorData, setInvestorData] = useState(null);
@@ -67,8 +68,9 @@ const HomePage = () => {
             <WhoWeAreSection />
             <AboutCard />
             <FindServices investorData={investorData} investeeData={investeeData} />
-            <CallToAction />
+            <ServicesSection />
             <HowDoesItWork />
+            <CallToAction />
             <PerksCard />
             <div className="w-full flex justify-center py-20">
                 <div className="w-4/5">
