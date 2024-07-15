@@ -7,6 +7,7 @@ import { FiMenu, FiX } from 'react-icons/fi';
 import { MdVerified } from "react-icons/md";
 
 import Logo from '../../../Assets/Logo/cover_1.png';
+import Logo_Mobile from '../../../Assets/Logo/cover.png';
 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -315,7 +316,7 @@ const Navbar = () => {
                         <nav role="navigation" className="flex flex-col gap-8 items-start">
                             <div className="flex flex-col items-start gap-2">
                                 <Link to="/" className="text-xl md:text-3xl font-nter">
-                                    <img src={Logo} alt="logo" className="w-64 h-16" />
+                                    <img src={Logo_Mobile} alt="logo" className="w-64 h-16" />
                                 </Link>
                             </div>
                             <ul className="flex flex-col gap-2">
@@ -414,8 +415,7 @@ const Navbar = () => {
                             </ul>
                         </nav>
                     </div>
-                )
-                }
+                )}
             </header >
         </div >
     );
