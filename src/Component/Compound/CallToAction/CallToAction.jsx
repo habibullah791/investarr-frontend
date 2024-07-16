@@ -1,28 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputBox from '../../Atom/InputBox/InputBox';
 
-import { Link } from 'react-router-dom';
+import Spinner from "../../Atom/Spinner/Spinner";
+import { toast } from 'react-hot-toast';
 
-import axios from 'axios';
-
-const SendUserEmail = async (formData) => {
-    try {
-        await axios.post('/email/submit/', formData);
-        console.log('Email sent successfully!');
-    } catch (error) {
-        console.error('Error sending email:', error);
-    }
-};
+import { SendUserEmail } from '../../../api/User/User';
 
 const CallToAction = () => {
+    const [email, setEmail] = useState('');
+    const [isloading, setIsLoading] = useState(false);
 
-    const SendEmail = () => {
-        const formData = {
-            subject: 'New User',
-            message: 'New User has shown interest in Investarr',
-        };
-        SendUserEmail(formData);
+    const handleInputChange = (e) => {
+        setEmail(e.target.value);
     };
+
+    const SendEmail = async () => {
+        setIsLoading(true);
+        const response = await SendUserEmail(email)
+        setIsLoading(false);
+        if (response.statusCode === 200) {
+            toast.success(response.message)
+        }
+        else {
+            toast.error(response.message)
+        }
+    };
+
+    if (isloading) return <Spinner />
 
     return (
         <div className='w-full flex justify-center items-start my-8 py-4'>
@@ -32,8 +36,10 @@ const CallToAction = () => {
                 <div className='w-full md:w-2/5 flex flex-col md:flex-row justify-center items-center gap-4 mt-4'>
                     <div className='w-11/12 md:w-3/5'>
                         <InputBox
-                            type='text'
+                            type='email'
                             placeholder='Enter your email'
+                            value={email}
+                            onChange={handleInputChange}
                         />
                     </div>
                     <div className='w-11/12 md:w-2/5'>

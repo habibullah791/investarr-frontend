@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ContactUsAPI } from '../../../api/User/User';
 
 import InputBox from '../../Atom/InputBox/InputBox';
 import TextArea from '../../Atom/TextArea/TextArea';
@@ -9,7 +10,6 @@ import { MdAlternateEmail } from "react-icons/md";
 import { FaInstagram } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
-
 
 import ContactUsBanner from '../../../Assets/ContactUs.png';
 
@@ -31,17 +31,23 @@ const ContactUs = () => {
         });
     }
 
-    const handleSubmit = (e) => {
+    // Update how formData is structured before sending the POST request
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            setLoading(false);
-            // Handle success or error accordingly
-            setError('Your message has been sent successfully!'); // For demonstration, setting error as success message
-        }, 2000);
-    }
+        try {
+            const response = await ContactUsAPI({
+                recipient_email: formData.email,
+                subject: formData.subject,
+                content: formData.message,
+                name: formData.name
+            });
+            console.log(response);
+            // Handle response as needed
+        } catch (error) {
+            console.error("Error submitting contact form:", error);
+            // Handle error as needed
+        }
+    };
 
     return (
         <div className="flex justify-center items-start my-16">
@@ -53,7 +59,7 @@ const ContactUs = () => {
                     <div className="mt-10">
                         <p className="text-md"><FaLocationDot className="text-primary text-2xl inline mr-2" /> 123, Main Street, New York, USA</p>
                         <p className="text-md"><MdCallEnd className="text-primary text-2xl inline mr-2" /> +1 234 567 890</p>
-                        <p className="text-md"><MdAlternateEmail className="text-primary text-2xl inline mr-2" />example@gmail.com</p>
+                        <p className="text-md"><MdAlternateEmail className="text-primary text-2xl inline mr-2" /> example@gmail.com</p>
                     </div>
                     <div className="w-1/4 mt-6">
                         <div className='flex gap-4'>

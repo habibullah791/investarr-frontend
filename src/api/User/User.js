@@ -241,18 +241,12 @@ export const verifyPayment = async (accessToken, userId, paymentStatus) => {
     }
 };
 
-export const SendUserEmail = async (formData) => {
+export const SendUserEmail = async (recipient_email) => {
     try {
         const response = await axios.post(
-            `${API_URL}/email/submit/`,
+            `${API_URL}/email/send/`,
             {
-                formData
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Authorization: `Bearer ${accessToken}`
-                }
+                recipient_email
             }
         );
         return response.data;
@@ -261,6 +255,21 @@ export const SendUserEmail = async (formData) => {
         console.error("Error verifying payment:", error);
 
         // Throw a stringified version of the error response data
+        throw JSON.stringify(error.response.data);
+    }
+};
+
+
+export const ContactUsAPI = async (formData) => {
+    console.log(formData);
+    try {
+        const response = await axios.post(
+            `${API_URL}/contact-us/`,
+            formData  // Send formData directly
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error verifying payment:", error);
         throw JSON.stringify(error.response.data);
     }
 };
