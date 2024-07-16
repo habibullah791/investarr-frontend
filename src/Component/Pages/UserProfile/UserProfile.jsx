@@ -22,6 +22,10 @@ const UserProfile = () => {
     const tokens = useSelector(selectTokens);
     const isAuthenticated = useSelector(selectIsAuthenticated);
 
+    console.log('id:', id);
+    console.log('tokens:', tokens);
+    console.log('isAuthenticated:', isAuthenticated);
+
     const [userData, setUserData] = useState(null);
     const [blockUserModalOpen, setBlockUserModalOpen] = useState(false);
     const [reportUserModalOpen, setReportUserModalOpen] = useState(false);

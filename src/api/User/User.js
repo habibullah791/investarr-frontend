@@ -172,12 +172,6 @@ export const getUserCertifiedUsers = async (accessToken) => {
     try {
         const response = await axios.get(
             `${API_URL}/certified-users/`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${accessToken}`
-                }
-            }
         );
         return response.data;
     } catch (error) {

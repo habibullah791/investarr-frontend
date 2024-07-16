@@ -57,7 +57,7 @@ const FindInvestees = () => {
                         <h1 className='text-4xl font-bold text-primary'>Investors</h1>
                         <p className='text-sm text-secondary'>Find the best investors for your startup</p>
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full md:w-28'>
                         <FilterDropdown
                             filters={filters}
                             setFilters={setFilters}
