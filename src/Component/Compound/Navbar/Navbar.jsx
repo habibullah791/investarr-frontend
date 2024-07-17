@@ -360,7 +360,10 @@ const Navbar = () => {
                                                 <Link
                                                     to="/learning-room"
                                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
-                                                    onClick={closeResourceDropdown}
+                                                    onClick={() => {
+                                                        closeMobileMenu();
+                                                        closeResourceDropdown();
+                                                    }}
                                                 >
                                                     Learning Room
                                                 </Link>
@@ -369,7 +372,10 @@ const Navbar = () => {
                                                 <Link
                                                     to="/contact-us"
                                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
-                                                    onClick={closeResourceDropdown}
+                                                    onClick={() => {
+                                                        closeMobileMenu();
+                                                        closeResourceDropdown();
+                                                    }}
                                                 >
                                                     Contact Us
                                                 </Link>
@@ -378,7 +384,10 @@ const Navbar = () => {
                                                 <Link
                                                     to="/about"
                                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200 border-b"
-                                                    onClick={closeResourceDropdown}
+                                                    onClick={() => {
+                                                        closeMobileMenu();
+                                                        closeResourceDropdown();
+                                                    }}
                                                 >
                                                     About Us
                                                 </Link>
@@ -387,7 +396,10 @@ const Navbar = () => {
                                                 <Link
                                                     to="/faq"
                                                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                                    onClick={closeResourceDropdown}
+                                                    onClick={() => {
+                                                        closeMobileMenu();
+                                                        closeResourceDropdown();
+                                                    }}
                                                 >
                                                     FAQ
                                                 </Link>
@@ -398,7 +410,13 @@ const Navbar = () => {
                                 {!isAuthenticated && (
                                     <div className="flex flex-row gap-2">
                                         <li>
-                                            <Link to="/login" className="text-white text-base">
+                                            <Link
+                                                to="/login"
+                                                className="text-white text-base"
+                                                onClick={() => {
+                                                    closeMobileMenu();
+                                                }}
+                                            >
                                                 Login
                                             </Link>
                                         </li>
@@ -406,7 +424,13 @@ const Navbar = () => {
                                             |
                                         </div>
                                         <li>
-                                            <Link to="/signup" className="text-white text-base">
+                                            <Link
+                                                to="/signup"
+                                                className="text-white text-base"
+                                                onClick={() => {
+                                                    closeMobileMenu();
+                                                }}
+                                            >
                                                 Create Account
                                             </Link>
                                         </li>

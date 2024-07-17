@@ -135,8 +135,8 @@ const Messages = () => {
 
     return (
         <div className='w-full flex justify-center items-start h-screen'>
-            <div className='w-11/12 md:w-4/5 flex flex-row gap-8'>
-                <div className="flex h-full w-[300px] flex-col border-r border-gray-200 bg-white">
+            <div className='w-11/12 md:w-4/5 flex flex-col md:flex-row gap-8'>
+                <div className="flex h-full w-full md:w-[300px] flex-col border-r border-gray-200 bg-white">
                     <header className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
                         <div className="flex items-center gap-3">
                             <div className="relative w-10 h-10">
@@ -153,7 +153,7 @@ const Messages = () => {
                             </div>
                         </div>
                     </header>
-                    <div className="flex-1 overflow-auto p-4" style={{ maxHeight: '70vh', minHeight: '50vh', scrollbarWidth: 'thin', scrollbarColor: '#483BBF #E5E7EB' }}>
+                    <div className="scrollable-container flex-1 overflow-auto p-4">
                         {contacts.map((contact, index) => (
                             <div
                                 key={index}
@@ -177,10 +177,8 @@ const Messages = () => {
                             </div>
                         ))}
                     </div>
-
-
                 </div>
-                <div className="flex w-full flex-col bg-gray-100 ">
+                <div className="flex w-full flex-col bg-gray-100">
                     {showMessages ? (
                         <>
                             <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3">
@@ -193,12 +191,14 @@ const Messages = () => {
                                         />
                                     </div>
                                     <div className="grid gap-0.5">
-                                        <div className="font-medium">{currentUser?.name ? currentUser?.name : currentUser?.first_name + ' ' + currentUser?.last_name}</div>
+                                        <div className="font-medium">
+                                            {currentUser?.name ? currentUser?.name : `${currentUser?.first_name} ${currentUser?.last_name}`}
+                                        </div>
                                         <div className="text-xs text-green-500">Online</div>
                                     </div>
                                 </div>
                             </header>
-                            <div className="flex-1 overflow-auto p-4" style={{ maxHeight: '70vh', minHeight: '50vh' }}>
+                            <div className="scrollable-container-message flex-1">
                                 <div className="grid gap-6">
                                     {messages.map((msg, index) => (
                                         <div key={index} className={`flex ${msg.senderId === logedInUser.id ? 'justify-end' : 'justify-start'} gap-3`}>
@@ -239,7 +239,6 @@ const Messages = () => {
                                     </button>
                                 </div>
                             </div>
-
                         </>
                     ) : (
                         <div className="flex-1 flex items-center justify-center">
