@@ -273,3 +273,40 @@ export const ContactUsAPI = async (formData) => {
         throw JSON.stringify(error.response.data);
     }
 };
+
+export const GenerateOTP = async (accessToken) => {
+    console.log(accessToken);
+    try {
+        const response = await axios.post(
+            `${API_URL}/generate-otp/`,
+            {},
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const VerifyOTP = async (accessToken, otp) => {
+    try {
+        const response = await axios.post(
+            `${API_URL}/verify-otp/`,
+            { otp },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${accessToken}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};

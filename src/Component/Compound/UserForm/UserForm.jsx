@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 import Dropdown from '../../Atom/DropDown/DropDown';
 import TextArea from '../../Atom/TextArea/TextArea';
@@ -194,14 +196,16 @@ const StepOne = ({ formData, handleChange, onNext }) => {
                     value={formData.password}
                     onChange={handleInputChange}
                 />
-                <InputBox
-                    label="Phone Number"
-                    placeholder="Phone Number"
-                    name="phone_number"
-                    type="tel"
-                    value={formData.phone_number}
-                    onChange={handleInputChange}
-                />
+                <div className='flex flex-col my-1'>
+                    <label className='text-sm text-primary'>Phone no</label>
+                    <PhoneInput
+                        inputStyle={{ width: '100%', height: '40px', borderRadius: '8px', border: '2px solid #483BBF' }}
+                        buttonStyle={{ borderRadius: '8px 0 0 8px', borderLeft: '2px solid #483BBF', borderTop: '2px solid #483BBF', borderBottom: '2px solid #483BBF' }}
+                        country={'us'}
+                        value={formData.phone_number}
+                        onChange={phone => handleChange('phone_number', phone)}
+                    />
+                </div>
                 <TextArea
                     label="Bio"
                     placeholder="Bio"

@@ -3,7 +3,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import { setUser, setTokens } from '../../../../store/user/userSlice';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+
+import { setUser } from '../../../../store/user/userSlice';
 
 import InputBox from '../../../Atom/InputBox/InputBox';
 import DropDown from '../../../Atom/DropDown/DropDown';
@@ -204,7 +207,7 @@ const PersonalInfo = ({ user, tokens }) => {
                 }}
             />
             <h2 className="tracking-tighter text-2xl font-bold mb-4">Personal Info</h2>
-            <div className="grid grid-cols-2 gap-x-4 items-start">
+            <div className="grid grid-cols-2 gap-x-4 items-center md:items-start">
                 <div className="w-full col-span-2 flex flex-row items-center justify-center mt-4 mb-8 border-b">
                     <ImageField
                         label="Profile Picture"
@@ -219,30 +222,43 @@ const PersonalInfo = ({ user, tokens }) => {
                         defaultValues={formData.galleryImages}
                     />
                 </div>
-                <InputBox
-                    label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                />
-                <InputBox
-                    label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                />
-                <InputBox
-                    label="Phone Number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                />
-                <InputBox
-                    label="Address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                />
+                <div className='w-full col-span-2 grid gap-3 md:grid-cols-2'>
+                    <div className=''>
+                        <InputBox
+                            label="First Name"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className=''>
+                        <InputBox
+                            label="Last Name"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='flex flex-col my-1'>
+                        <label className='text-sm text-primary'>Phone no</label>
+                        <PhoneInput
+                            inputStyle={{ width: '100%', height: '40px', borderRadius: '8px', border: '2px solid #483BBF' }}
+                            buttonStyle={{ borderRadius: '8px 0 0 8px', borderLeft: '2px solid #483BBF', borderTop: '2px solid #483BBF', borderBottom: '2px solid #483BBF' }}
+                            country={'us'}
+                            value={formData.phone}
+                            onChange={phone => setFormData({ ...formData, phone: phone })}
+                        />
+                    </div>
+                    <div className=''>
+                        <InputBox
+                            label="Address"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+
                 <div className="col-span-2">
                     <label className='text-sm text-primary'>Area of Interest</label>
                     <Select

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MdOutlineVerifiedUser, MdOutlinePending } from "react-icons/md";
+
+import toast, { Toaster } from 'react-hot-toast';
+
 import VerificationCodeInput from '../../Atom/VerificationCodeInput/VerificationCodeInput';
 
 const CustomVerificationCard = ({
@@ -9,6 +12,7 @@ const CustomVerificationCard = ({
     handleVerify,
     loadingVerify,
     showVerificationCode,
+    sendOTP,
     setShowVerificationCode,
     title,
     statusText,
@@ -27,18 +31,22 @@ const CustomVerificationCard = ({
     };
 
     const handleEmailVerification = () => {
+        if (codes.some((code) => code === '') || codes.length < 4) {
+            toast.error('Please enter the complete verification code');
+            return;
+        }
         handleVerify(codes);
     };
 
     return (
-        <div className="w-1/2 flex flex-col gap-4 border border-gray-200 p-4 rounded-lg">
+        <div className="w-full flex flex-col gap-4 border border-gray-200 p-4 rounded-lg">
             <div className='flex flex-row items-center gap-2'>
                 {Icon}
                 <h3 className="text-lg font-semibold">{title}</h3>
             </div>
             <div className='flex flex-row justify-between items-center gap-2'>
                 {showVerificationCode ? (
-                    <>
+                    <div className='flex flx-row justify-between items-start gap-5'>
                         <VerificationCodeInput codes={codes} onCodeChange={onCodeChange} />
                         <button
                             onClick={handleEmailVerification}
@@ -54,7 +62,7 @@ const CustomVerificationCard = ({
                                 verifyButtonText
                             )}
                         </button>
-                    </>
+                    </div>
                 ) : (
                     <div className='w-11/12 flex flex-row justify-between items-center gap-2'>
                         <div>
@@ -82,7 +90,7 @@ const CustomVerificationCard = ({
                     <p className="text-muted-foreground text-gray-500">{promptMessage}</p>
                     {showResendEmailButton && (
                         <Link
-                            onClick={() => setShowVerificationCode(true)}
+                            onClick={sendOTP}
                             className="text-primary font-medium"
                         >
                             {resendLinkText}

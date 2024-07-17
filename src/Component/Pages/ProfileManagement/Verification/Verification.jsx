@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { MdOutlineEmail } from "react-icons/md";
 import { BsTelephone } from "react-icons/bs";
-import { IoDocumentAttachOutline } from "react-icons/io5";
+import { useDispatch } from 'react-redux';
 
+import { setUser } from '../../../../store/user/userSlice';
+import { GenerateOTP, VerifyOTP } from '../../../../api/User/User';
 
 import CustomVerificationCard from '../../../Compound/CustomVerificationCard/CustomVerificationCard';
 
 const Verification = ({ user, tokens }) => {
-    // const { is_email_verified, is_phone_verified } = user;
-    const [is_email_verified, setIsEmailVerified] = useState(false);
+    console.log(user);
+    console.log(user.email_verified);
+    const dispatch = useDispatch();
+
+    const [is_email_verified, setIsEmailVerified] = useState(user.is_email_verified);
     const [is_phone_verified, setIsPhoneVerified] = useState(false);
     const [loadingVerifyEmail, setLoadingVerifyEmail] = useState(false);
     const [loadingVerifyPhone, setLoadingVerifyPhone] = useState(false);
@@ -21,11 +27,23 @@ const Verification = ({ user, tokens }) => {
         setLoadingVerifyEmail(true);
         codes = codes.join('');
 
-        setTimeout(() => {
-            setLoadingVerifyEmail(false);
-            setShowEmailVerificationCode(false);
-            setIsEmailVerified(true);
-        }, 2000);
+        VerifyOTP(tokens.access, codes)
+            .then((response) => {
+                toast.success(response.message);
+                setShowEmailVerificationCode(false);
+                setIsEmailVerified(true);
+
+                dispatch(setUser({
+                    ...user,
+                    email_verified: true
+                }));
+
+            }).catch((error) => {
+                setShowEmailVerificationCode(false);
+                toast.error(error.message);
+            }).finally(() => {
+                setLoadingVerifyEmail(false);
+            });
     };
 
     const handleVerifyPhone = (codes) => {
@@ -39,18 +57,20 @@ const Verification = ({ user, tokens }) => {
         }, 2000);
     }
 
+    const sendOTPEmail = async () => {
+        GenerateOTP(tokens.access)
+            .then((response) => {
+                toast.success(response.message);
+                setShowEmailVerificationCode(true);
+            });
+
+    }
+
     return (
         <div className="container">
             <div className='w-11/12'>
                 <h2 className="tracking-tighter text-2xl font-bold mb-4">Verify your account</h2>
-                <div className='flex flex-row gap-6 mb-8'>
-                    {/* <CustomVerificationCard
-                        is_email_verified={is_email_verified}
-                        handleVerifyEmail={handleVerifyEmail}
-                        loadingVerifyEmail={loadingVerifyEmail}
-                        showEmailVerificationCode={showEmailVerificationCode}
-                        setShowEmailVerificationCode={setShowEmailVerificationCode}
-                    /> */}
+                <div className='flex flex-col md:flex-row gap-6 mb-8'>
                     <CustomVerificationCard
                         Icon={<MdOutlineEmail className='text-2xl text-primary' />}
                         is_verified={is_email_verified}
@@ -58,6 +78,7 @@ const Verification = ({ user, tokens }) => {
                         loadingVerify={loadingVerifyEmail}
                         showVerificationCode={showEmailVerificationCode}
                         setShowVerificationCode={setShowEmailVerificationCode}
+                        sendOTP={sendOTPEmail}
                         title="Email Verification"
                         statusText="Status:"
                         verifiedText="Verified"

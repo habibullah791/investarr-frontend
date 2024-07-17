@@ -28,21 +28,24 @@ const VerificationCodeInput = ({ length = 4, codes, onCodeChange }) => {
     };
 
     return (
-        <div className="flex justify-center items-center">
-            {codes.map((code, index) => (
-                <input
-                    key={index}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength="1"
-                    className="appearance-none w-12 h-12 text-center text-2xl bg-gray-200 m-2 border border-gray-200 rounded-md focus:outline-none focus:border-primary"
-                    value={code}
-                    onChange={(e) => handleChange(e, index)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    ref={(el) => (inputRefs.current[index] = el)}
-                />
-            ))}
+        <div className="flex flex-col justify-center gap-3">
+            <div className='flex justify-center'>
+                {codes.map((code, index) => (
+                    <input
+                        key={index}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength="1"
+                        className="appearance-none w-12 h-12 text-center text-2xl bg-gray-200 mr-3 border border-gray-200 rounded-md focus:outline-none focus:border-primary"
+                        value={code}
+                        onChange={(e) => handleChange(e, index)}
+                        onKeyDown={(e) => handleKeyDown(e, index)}
+                        ref={(el) => (inputRefs.current[index] = el)}
+                    />
+                ))}
+            </div>
+            <p className="text-sm text-red-500">The Code will expire in 60 seconds</p>
         </div>
     );
 };
