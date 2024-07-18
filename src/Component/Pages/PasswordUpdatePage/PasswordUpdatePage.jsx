@@ -11,7 +11,7 @@ const PasswordUpdatePage = () => {
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: '',
         confirm_password: ''
     });
@@ -63,13 +63,13 @@ const PasswordUpdatePage = () => {
                             onSubmit={handleSubmit}
                             className='w-full flex flex-col justify-center items-center gap-3'
                         >
-                            <h2 className="tracking-tighter text-primary text-lg md:text-2xl mb-6">Enter your username and new password</h2>
+                            <h2 className="tracking-tighter text-primary text-lg md:text-2xl mb-6">Enter your email and new password</h2>
                             <div className='w-full'>
                                 <InputBox
-                                    label={"Username"}
-                                    placeholder={"Username"}
-                                    name="username"
-                                    type="text"
+                                    label={"Email"}
+                                    placeholder={"Email"}
+                                    name="email"
+                                    type="email"
                                     onChange={handleChange}
                                 />
                                 <InputBox
