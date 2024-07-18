@@ -1,6 +1,6 @@
 import React from 'react';
 
-import HeroBanner from '../../../Assets/about.png';
+import HeroBanner from '../../../Assets/Banners/about.png';
 import HeroSection from '../../Compound/HeroSection/HeroSection';
 import FeatureSection from '../../Molecule/FeatureSection/FeatureSection';
 

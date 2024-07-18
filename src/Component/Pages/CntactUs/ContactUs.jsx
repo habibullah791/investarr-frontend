@@ -11,7 +11,7 @@ import { FaInstagram } from "react-icons/fa";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 
-import ContactUsBanner from '../../../Assets/ContactUs.png';
+import ContactUsBanner from '../../../Assets/Banners/ContactUs.png';
 
 const ContactUs = () => {
     const [formData, setFormData] = useState({

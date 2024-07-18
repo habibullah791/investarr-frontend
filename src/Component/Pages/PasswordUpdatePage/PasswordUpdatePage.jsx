@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../../Atom/Spinner/Spinner';
 import { resetPassword } from '../../../api/User/User';  // Adjust this path as needed
-import imageSrc from '../../../Assets/HeroBanner_1.png';
+import imageSrc from '../../../Assets/forget_password.png';
 
 const PasswordUpdatePage = () => {
     const navigate = useNavigate();
@@ -95,11 +95,11 @@ const PasswordUpdatePage = () => {
                             </button>
                         </form>
                     </div>
-                    <div className='md:block hidden w-1/2'>
+                    <div className='md:block hidden w-1/2 flex justify-end items-end'>
                         <img
                             src={imageSrc}
                             alt='banner'
-                            className='w-4/5 h-auto'
+                            className='w-3/5 mb-0 ml-auto'
                         />
                     </div>
                 </div>

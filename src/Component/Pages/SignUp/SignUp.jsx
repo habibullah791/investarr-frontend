@@ -1,6 +1,5 @@
 import React from 'react'
 import UserForm from '../../Compound/UserForm/UserForm'
-import imageSrc from '../../../Assets/HeroBanner_1.png';
 
 
 const SignUp = () => {

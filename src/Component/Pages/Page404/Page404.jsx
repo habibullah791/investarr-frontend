@@ -1,5 +1,5 @@
 import React from 'react';
-import page404Img from '../../../Assets/404_IMG.png';
+import page404Img from '../../../Assets/Banners/404_IMG.png';
 import { Link } from 'react-router-dom';
 
 const Page404 = () => {

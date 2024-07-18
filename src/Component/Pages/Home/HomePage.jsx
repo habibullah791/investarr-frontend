@@ -10,7 +10,7 @@ import PerksCard from "../../Compound/PerksCard/PerksCard";
 import FAQ from "../../Compound/FAQ/FAQ";
 import Spinner from "../../Atom/Spinner/Spinner";
 
-import HeroBanner_1 from "../../../Assets/HeroBanner_1.png";
+import HeroBanner from "../../../Assets/Banners/HeroBanner_1.png";
 
 import { fetchInvestorData, fetchInvesteeData } from "../../../api/User/User";
 import { faqData } from '../../../Constant/constants';
@@ -61,7 +61,7 @@ const HomePage = () => {
                 learnMoreText="Learn More"
                 onCreateAccount={() => console.log("Create Account Clicked")}
                 onLearnMore={() => console.log("Learn More Clicked")}
-                imageSrc={HeroBanner_1}
+                imageSrc={HeroBanner}
             />
             <StatsSection />
             <WhoWeAreSection />

@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 import Spinner from '../../Atom/Spinner/Spinner';
-import imageSrc from '../../../Assets/HeroBanner_1.png';
+import imageSrc from '../../../Assets/Banners/login.png';
 
 import { login } from '../../../api/User/User';
 import { useDispatch } from 'react-redux';
@@ -103,11 +103,11 @@ const LoginPage = () => {
                             <p className="text-sm text-gray-600">Don't have an account? <Link to="/signup" className="text-primary">Sign up</Link></p>
                         </div>
                     </div>
-                    <div className='md:block hidden w-1/2'>
+                    <div className='md:block hidden w-1/2 flex justify-end items-end'>
                         <img
                             src={imageSrc}
                             alt='banner'
-                            className='w-4/5 h-auto'
+                            className='w-3/5 mb-0 ml-auto'
                         />
                     </div>
                 </div>
