@@ -1,19 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Utility function to set data in localStorage
-const setLocalStorage = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
-};
+import { setLocalStorageWithExpiry, getLocalStorageWithExpiry } from '../../utils/utilityFunctions';
 
-// Utility function to get data from localStorage
-const getLocalStorage = (key) => {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
-};
-
-const storedUser = getLocalStorage("user");
-const storedIsAuthenticated = getLocalStorage("isAuthenticated");
-const tokens = getLocalStorage("tokens");
+const storedUser = getLocalStorageWithExpiry("user");
+const storedIsAuthenticated = getLocalStorageWithExpiry("isAuthenticated");
+const tokens = getLocalStorageWithExpiry("tokens");
 
 const initialState = {
     user: storedUser || null,
@@ -31,12 +22,12 @@ const userSlice = createSlice({
         setUser: (state, action) => {
             state.user = action.payload;
             state.isAuthenticated = !!action.payload;
-            setLocalStorage("user", action.payload);
-            setLocalStorage("isAuthenticated", state.isAuthenticated);
+            setLocalStorageWithExpiry("user", action.payload);
+            setLocalStorageWithExpiry("isAuthenticated", state.isAuthenticated);
         },
         setTokens: (state, action) => {
             state.tokens = action.payload;
-            setLocalStorage("tokens", action.payload);
+            setLocalStorageWithExpiry("tokens", action.payload);
         },
         clearUser: (state) => {
             state.user = null;

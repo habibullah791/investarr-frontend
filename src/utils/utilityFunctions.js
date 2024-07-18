@@ -1,32 +1,30 @@
-// Function to set an item in session storage
-export const setSessionStorage = (key, value) => {
-    try {
-        sessionStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-        console.error('Error setting session storage:', error);
-    }
+// Utility function to set data in localStorage with timestamp
+export const setLocalStorageWithExpiry = (key, value) => {
+    const now = new Date();
+    const item = {
+        value: value,
+        expiry: now.getTime() + 24 * 60 * 60 * 1000,
+    };
+    localStorage.setItem(key, JSON.stringify(item));
 };
 
-// Function to get an item from session storage
-export const getSessionStorage = (key) => {
-    try {
-        const storedItem = sessionStorage.getItem(key);
-        return storedItem ? JSON.parse(storedItem) : null;
-    } catch (error) {
-        console.error('Error getting session storage:', error);
+// Utility function to get data from localStorage and check expiry
+export const getLocalStorageWithExpiry = (key) => {
+    const itemStr = localStorage.getItem(key);
+    // If the item doesn't exist, return null
+    if (!itemStr) {
         return null;
     }
-};
-
-// Function to remove an item from session storage
-export const removeSessionStorage = (key) => {
-    try {
-        sessionStorage.removeItem(key);
-    } catch (error) {
-        console.error('Error removing session storage:', error);
+    const item = JSON.parse(itemStr);
+    const now = new Date();
+    // Compare the expiry time of the item with the current time
+    if (now.getTime() > item.expiry) {
+        // If the item is expired, remove it from localStorage and return null
+        localStorage.removeItem(key);
+        return null;
     }
+    return item.value;
 };
-
 
 
 // Function to set an item in local storage
