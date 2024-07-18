@@ -19,6 +19,7 @@ const CallToAction = () => {
         const response = await SendUserEmail(email)
         setIsLoading(false);
         if (response.statusCode === 200) {
+            setEmail('');
             toast.success(response.message)
         }
         else {
