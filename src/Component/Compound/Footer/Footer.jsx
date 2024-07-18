@@ -29,7 +29,7 @@ const Footer = () => {
                         </Link>
                     </div>
                     <div className="flex flex-row items-center gap-4">
-                        <Link to="/contact" className="text-slate-300 underline flex flex-row items-center">
+                        <Link to="/contact-us" className="text-slate-300 underline flex flex-row items-center">
                             <h4>Contact</h4>
                             <CgArrowTopRight className="text-slate-300" />
                         </Link>
