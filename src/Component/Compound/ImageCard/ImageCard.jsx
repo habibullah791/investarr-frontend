@@ -7,7 +7,7 @@ const ImageCard = ({ imgUrl, heading, desc, classes }) => {
                 <div className={`w-full md:w-1/2 flex flex-col gap-3 ${classes === 'flex-row-reverse' ? 'md:pl-10 md:pt-10' : ''}`}>
                     <h3 className="text-primary text-2xl">{heading}</h3>
                     <p className="md:text-md text-md md:pr-16">{desc}</p>
-                    <button className="w-full md:w-1/4 bg-white text-primary py-2 px-6 border border-primary rounded-lg hover:text-white hover:bg-primary hover:border hover:border-primary">Learn More</button>
+                    <button className="w-full md:w-1/3 bg-white text-primary py-2 px-6 border border-primary rounded-lg hover:text-white hover:bg-primary hover:border hover:border-primary">Learn More</button>
                 </div>
                 <div className="w-full md:w-1/2 h-full">
                     <img

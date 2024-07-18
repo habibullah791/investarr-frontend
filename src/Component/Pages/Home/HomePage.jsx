@@ -45,8 +45,7 @@ const HomePage = () => {
         fetchData();
     }, []);
 
-    if (loading) return <Spinner />;
-    if (error) return <div>Error: {error.message}</div>;
+    if (loading) return <Spinner />
 
     return (
         <>
@@ -67,7 +66,13 @@ const HomePage = () => {
             <StatsSection />
             <WhoWeAreSection />
             <AboutCard />
-            <FindServices investorData={investorData} investeeData={investeeData} />
+            {error ?
+                <div
+                    className="w-full flex justify-center items-center h-96"
+                >Error While Fetching Data</div>
+                :
+                <FindServices investorData={investorData} investeeData={investeeData} />
+            }
             <ServicesSection />
             <HowDoesItWork />
             <CallToAction />

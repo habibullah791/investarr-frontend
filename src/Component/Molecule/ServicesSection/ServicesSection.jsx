@@ -14,6 +14,7 @@ import { selectTokens } from '../../../store/user/userSlice';
 import { Authentication, RegisterIPNURL, SubmitOrderRequest } from '../../../api/Payment/Payment.js';
 import { storeOrderTrackId } from '../../../api/User/User.js';
 import { selectIsAuthenticated } from '../../../store/user/userSlice';
+import { Link } from 'react-router-dom';
 
 const membershipPlans = [
     {
@@ -222,7 +223,10 @@ const ServicesSection = () => {
 
                         <div className="bg-gray-200 rounded-lg w-full flex flex-col md:flex-row justify-center items-center gap-4 py-8 px-4">
                             <img src={LightICon} alt="Light Icon" className="w-24 h-24" />
-                            <h2 className="tracking-tighter md:w-3/4 text-center text-2xl font-semibold text-primary">Become a Premium Member and Boost Your Chances of Finding the Right Investment</h2>
+                            <h2 className="tracking-tighter md:w-3/4 text-center text-2xl font-semibold text-primary">
+                                Become a Premium Member and Boost Your Chances of Finding the Right Investment.
+                                <Link to="/membership" className="text-primary underline mx-2"> Learn More</Link>
+                            </h2>
                         </div>
                     </>
                 )}

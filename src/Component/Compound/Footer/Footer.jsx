@@ -16,13 +16,9 @@ const Footer = () => {
                         className="w-44 h-20 object-contain"
                     />
                     <p className="text-slate-300 md:text-left">Investarr is a platform that provides you with the best investment opportunities in the market. We provide you with the best investment opportunities in the market.</p>
-                    <div className="flex flex-row gap-4">
-                        <Link to="/about" className="text-slate-300 underline">Privacy Policy</Link>
-                        <Link to="/contact" className="text-slate-300 underline">Contact Us</Link>
-                    </div>
                 </div>
                 <div className="w-full md:w-1/3 mt-20 flex flex-row md:justify-end gap-4">
-                    <div className="flex flex-col items-center gap-4">
+                    <div className="flex flex-row items-center gap-4">
                         <Link to="/" className="text-slate-300 underline flex flex-row items-center">
                             <h4>Home</h4>
                             <CgArrowTopRight className="text-slate-300" />
@@ -32,7 +28,7 @@ const Footer = () => {
                             <CgArrowTopRight className="text-slate-300" />
                         </Link>
                     </div>
-                    <div className="flex flex-col items-center gap-4">
+                    <div className="flex flex-row items-center gap-4">
                         <Link to="/contact" className="text-slate-300 underline flex flex-row items-center">
                             <h4>Contact</h4>
                             <CgArrowTopRight className="text-slate-300" />
