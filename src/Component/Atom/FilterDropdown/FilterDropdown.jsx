@@ -44,8 +44,8 @@ const FilterDropdown = ({ filters, setFilters, AreaOFIntrest }) => {
                 {isOpen ? <MdKeyboardArrowUp size={24} /> : <MdKeyboardArrowDown size={24} />}
             </button>
             {isOpen && (
-                <div className='absolute top-full left-7 md:right-0 mt-2 p-4 border border-gray-300 bg-white rounded shadow-lg z-10'>
-                    <div className='w-64 md:w-96 flex flex-col gap-4 mb-4 px-4 py-2'>
+                <div className='absolute top-full mt-2 p-4 border border-gray-300 bg-white rounded shadow-lg z-10 sm:left-7 md:left-auto md:right-0'>
+                    <div className='w-72 md:w-96 flex flex-col gap-4 mb-4 px-4 py-2'>
                         <div className=''>
                             <h1 className='text-lg font-bold text-primary'>Filters</h1>
                             <hr className='my-2 mb-2' />
